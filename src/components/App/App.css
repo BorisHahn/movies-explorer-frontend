@@ -1,4 +1,24 @@
-.App {
-  text-align: center;
+.page {
+  max-width: 1280px;
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  font-family: 'Inter', Arial, sans-serif;
+  background-color: var(--white);
+  color: var(--black);
+  text-rendering: optimizeLegibility;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-font-smoothing: antialiased;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -moz-text-size-adjust: 100%;
+}
+
+.main {
+  width: 100%;
+  flex: 1;
 }
 
