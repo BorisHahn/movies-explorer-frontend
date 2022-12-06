@@ -89,3 +89,41 @@
   background-size: 50%;
   background-repeat: no-repeat;
 }
+
+.header__authentication {
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 30px;
+  list-style: none;
+  font-family: 'Inter';
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 133%;
+}
+
+.header__registr {
+  text-decoration: none;
+  color: var(--black);
+}
+
+.header__registr:hover {
+  opacity: 0.7;
+  cursor: pointer;
+}
+
+.header__signin {
+  text-decoration: none;
+  color: var(--abs-white);
+  padding: 8px 20px;
+  background: var(--blue);
+  border-radius: 3px;
+}
+
+.header__signin:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}

@@ -17,16 +17,16 @@ function App() {
 
   return (
     <div className='page'>
-      <Header />
+      <Header loggedIn={loggedIn} />
       <Switch>
-        <Route path='/'>
+        <Route exact path='/'>
           <Main />
         </Route>
         <Route path='/movies'>
           <Movies />
         </Route>
         <Route path='/saved-movies'>
-          <SavedMovies />
+          {loggedIn ? <SavedMovies /> : <Redirect to="/signin" />}
         </Route>
         <Route path='/signup'>
           <Register />

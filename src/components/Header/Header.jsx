@@ -2,7 +2,7 @@ import { Link, useLocation, useHistory } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import './Header.css';
 
-const Header = () => {
+const Header = ({ loggedIn }) => {
   const location = useLocation();
   const headerClass =
     location.pathname === '/' ? 'header header_main' : 'header';
@@ -39,10 +39,21 @@ const Header = () => {
           </Link>
         </li>
       </ul>
-      <Link className='header__profile' to='/profile'>
-        <p className='header__profile-text'>Аккаунт</p>
-        <div className='header__profile-logo'></div>
-      </Link>
+      {location.pathname === '/' && !loggedIn ? (
+        <ul className='header__authentication'>
+          <li>
+            <Link className='header__registr' to='/signup'>Регистрация</Link>
+          </li>
+          <li>
+            <Link className='header__signin' to='/signin'>Войти</Link>
+          </li>
+        </ul>
+      ) : (
+        <Link className='header__profile' to='/profile'>
+          <p className='header__profile-text'>Аккаунт</p>
+          <div className='header__profile-logo'></div>
+        </Link>
+      )}
     </header>
   );
 };
