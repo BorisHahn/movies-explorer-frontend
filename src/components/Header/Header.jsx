@@ -7,7 +7,7 @@ const Header = ({ loggedIn }) => {
   const headerClass =
     location.pathname === '/' ? 'header header_main' : 'header';
   const navigationClass =
-    location.pathname === '/movies' || location.pathname === '/saved-movies'
+  loggedIn
       ? 'header__navigation'
       : 'header__navigation header__navigation_hide';
   const moviesClass =

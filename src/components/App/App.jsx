@@ -19,24 +19,26 @@ function App() {
     <div className='page'>
       <Header loggedIn={loggedIn} />
       <Switch>
-        <Route exact path='/'>
-          <Main />
-        </Route>
-        <Route path='/movies'>
-          <Movies />
-        </Route>
-        <Route path='/saved-movies'>
-          {loggedIn ? <SavedMovies /> : <Redirect to="/signin" />}
-        </Route>
-        <Route path='/signup'>
-          <Register />
-        </Route>
-        <Route path='/signin'>
-          <Login />
-        </Route>
-        <Route path='/profile'>
-          <Profile />
-        </Route>
+        <main className='main'>
+          <Route exact path='/'>
+            <Main />
+          </Route>
+          <Route path='/movies'>
+            <Movies />
+          </Route>
+          <Route path='/saved-movies'>
+            {loggedIn ? <SavedMovies /> : <Redirect to='/signin' />}
+          </Route>
+          <Route path='/signup'>
+            <Register />
+          </Route>
+          <Route path='/signin'>
+            <Login />
+          </Route>
+          <Route path='/profile'>
+            <Profile />
+          </Route>
+        </main>
       </Switch>
       <Footer />
     </div>

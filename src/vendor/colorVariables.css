@@ -1,12 +1,15 @@
 :root {
-  --main: #F5F5F5;
-  --white: #FAFAFA;
-  --abs-white: #FFFFFF;
-  --light-gray: #F4F4F4;
+  --main: #f5f5f5;
+  --white: #fafafa;
+  --abs-white: #ffffff;
+  --light-gray: #f4f4f4;
+  --footer-gray: #f8f8f8;
   --scale-gray: #f2f2f2;
-  --scale-text-gray: #A0A0A0;
-  --stack-gray: #E8E8E8;
-  --gray: #DDDEE3;
-  --blue: #3456F3;
+  --scale-text-gray: #a0a0a0;
+  --stack-gray: #e8e8e8;
+  --gray: #dddee3;
+  --blue: #3456f3;
   --black: #000000;
+  --green: #2BE080;
+  --checkbox-disabled: #EBEBEB;
 }

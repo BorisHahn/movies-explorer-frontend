@@ -75,6 +75,10 @@
   border-radius: 40px;
 }
 
+.header__profile:hover {
+  opacity: 0.8;
+}
+
 .header__profile-text {
   margin: 0;
   padding: 0;
