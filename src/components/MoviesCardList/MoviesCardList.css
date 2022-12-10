@@ -1,0 +1,13 @@
+.movies-list {
+  width: 100%;
+  margin: 0;
+  padding: 70px 70px 0px 70px;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  flex-wrap: wrap;
+  column-gap: 24px;
+  row-gap: 37px;
+  box-sizing: border-box;
+}
