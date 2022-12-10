@@ -13,6 +13,10 @@
   background: var(--gray);
 }
 
+.header_hide {
+  display: none;
+}
+
 .header__navigation {
   margin: 0;
   padding: 0;

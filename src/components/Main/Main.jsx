@@ -7,13 +7,13 @@ import './Main.css';
 
 const Main = () => {
   return (
-    <>
+    <main className='main'>
       <Promo />
       <AboutProject />
       <Techs />
       <AboutMe />
       <Portfolio />
-    </>
+    </main>
   );
 };
 

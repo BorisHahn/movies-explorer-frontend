@@ -1,8 +1,12 @@
+import { useLocation } from 'react-router';
 import './Footer.css';
 
 const Footer = () => {
+  const location = useLocation();
+
+  const footerClass = (location.pathname === '/signin') || (location.pathname === '/signup') ? 'footer_hide' : 'footer';
   return (
-    <footer className='footer'>
+    <footer className={footerClass}>
       <h2 className='footer__title'>
         Учебный проект Яндекс.Практикум x BeatFilm.
       </h2>

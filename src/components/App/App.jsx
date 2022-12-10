@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import { Route, Switch, Redirect, useHistory } from 'react-router-dom';
+import { Route, Routes, Navigate, useHistory } from 'react-router-dom';
 import Header from '../Header/Header';
 import Main from '../Main/Main';
 import Movies from '../Movies/Movies';
@@ -9,6 +9,7 @@ import Register from '../Register/Register';
 import Login from '../Login/Login';
 import Profile from '../Profile/Profile';
 import Footer from '../Footer/Footer';
+import NotFound from '../NotFound/NotFound';
 
 import './App.css';
 
@@ -18,28 +19,22 @@ function App() {
   return (
     <div className='page'>
       <Header loggedIn={loggedIn} />
-      <Switch>
-        <main className='main'>
-          <Route exact path='/'>
-            <Main />
-          </Route>
-          <Route path='/movies'>
-            <Movies />
-          </Route>
-          <Route path='/saved-movies'>
-            {loggedIn ? <SavedMovies /> : <Redirect to='/signin' />}
-          </Route>
-          <Route path='/signup'>
-            <Register />
-          </Route>
-          <Route path='/signin'>
-            <Login />
-          </Route>
-          <Route path='/profile'>
-            <Profile />
-          </Route>
-        </main>
-      </Switch>
+      <Routes>
+        
+          <Route path='/' element={<Main />} />
+          <Route path='/movies' element={<Movies />} />
+          <Route
+            path='/saved-movies'
+            element={
+              loggedIn ? <SavedMovies /> : <Navigate replace to='/signin' />
+            }
+          />
+          <Route path='/signup' element={<Register />} />
+          <Route path='/signin' element={<Login />} />
+          <Route path='/profile' element={<Profile />} />
+          <Route path='*' element={<NotFound />} />
+        
+      </Routes>
       <Footer />
     </div>
   );
