@@ -2,10 +2,10 @@ import './FilterCheckbox.css';
 
 const FilterCheckbox = () => {
   return (
-    <label class='filter-checkbox'>
-      <input type='checkbox' class='filter-checkbox__checkbox'></input>
-      <div class='filter-checkbox__toggler-slider'>
-        <div class='filter-checkbox__toggler-knob'></div>
+    <label className='filter-checkbox'>
+      <input type='checkbox' className='filter-checkbox__checkbox'></input>
+      <div className='filter-checkbox__toggler-slider'>
+        <div className='filter-checkbox__toggler-knob'></div>
       </div>
     </label>
   );

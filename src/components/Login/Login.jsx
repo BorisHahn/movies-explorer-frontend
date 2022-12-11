@@ -19,7 +19,7 @@ const Login = () => {
             <div className='login__container'>
               <label className='login__label'>Пароль</label>
               <input type='password' className='login__input' value='12345678'></input>
-              <span className='login__error'>Ч</span>
+              <span className='login__error'></span>
             </div>
           </fieldset>
           <button className='login__button'>Войти</button>
