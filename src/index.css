@@ -1,0 +1,7 @@
+@import url(../src/vendor/fonts/inter.css);
+@import url(../src/vendor/colorVariables.css);
+@import url(../src/vendor/normalize.css);
+
+#root {
+  background-color: var(--white);;
+}
