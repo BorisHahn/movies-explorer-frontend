@@ -6,14 +6,7 @@
     right: 0px;
   }
 }
-@keyframes close {
-  0% {
-    right: 0px;
-  }
-  100% {
-    right: -520px;
-  }
-}
+
 
 .hamburger-menu {
   display: none;
@@ -46,4 +39,19 @@
 
 .hamburger-menu_opened body {
   overflow-y: hidden;
+}
+
+@media (max-width: 575.98px) { 
+  @keyframes inAndOut {
+    0% {
+      right: -520px;
+    }
+    100% {
+      right: 0;
+    }
+  }
+  .hamburger-menu_opened {
+    width: 100vw;
+    padding: 144px 10px 0 10px;
+  }
 }

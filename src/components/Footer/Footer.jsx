@@ -4,7 +4,12 @@ import './Footer.css';
 const Footer = () => {
   const location = useLocation();
 
-  const footerClass = (location.pathname === '/signin') || (location.pathname === '/signup') ? 'footer_hide' : 'footer';
+  const footerClass =
+    location.pathname === '/' ||
+    location.pathname === '/movies' ||
+    location.pathname === '/saved-movies'
+      ? 'footer'
+      : 'footer_hide';
   return (
     <footer className={footerClass}>
       <h2 className='footer__title'>

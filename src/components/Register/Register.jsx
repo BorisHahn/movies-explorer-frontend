@@ -15,15 +15,22 @@ const Register = () => {
               <label className='register__label'>Имя</label>
               <input
                 className='register__input'
+                minLength='2'
+                maxLength='40'
                 value='Борис'
+                required
               ></input>
               <span className='register__error'></span>
             </div>
             <div className='register__container'>
               <label className='register__label'>E-mail</label>
               <input
+                type='email'
                 className='register__input'
+                minLength='8'
+                maxLength='32'
                 value='pochta@yandex.ru'
+                required
               ></input>
               <span className='register__error'></span>
             </div>
@@ -32,7 +39,10 @@ const Register = () => {
               <input
                 type='password'
                 className='register__input register__input_error'
+                minLength='5'
+                maxLength='40'
                 value='1234567'
+                required
               ></input>
               <span className='register__error '>Что-то пошло не так...</span>
             </div>

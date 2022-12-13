@@ -17,7 +17,9 @@ const AboutMe = () => {
             которыми пользуются живые настоящие люди, закрывают свои потребности
             и испытывают эмоции.
           </p>
-          <a className='aboutMe__link' href='https://github.com/BorisHahn'>Github</a>
+          <a className='aboutMe__link' href='https://github.com/BorisHahn'>
+            Github
+          </a>
         </div>
         <div className='aboutMe__photo'></div>
       </div>

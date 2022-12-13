@@ -1,6 +1,6 @@
 .aboutMe {
   height: auto;
-  padding: 110px 70px 125px 70px;
+  padding: 110px 70px 0 70px;
   margin: 0;
   display: flex;
   flex-direction: column;
@@ -62,18 +62,24 @@
 
 .aboutMe__photo {
   min-width: 270px;
-  height: 270px;
+  height: 327px;
   background-image: url(../../images/student.jpg);
-  background-size: contain;
+  background-size: cover;
   background-repeat: no-repeat;
+  background-position: center;
   border-radius: 10px;
 }
 
 .aboutMe__info-story {
   margin: 0;
-  margin-bottom: 18px;
+  margin-bottom: 99px;
   padding: 0;
   max-width: 600px;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 157%;
 }
 
 .aboutMe__link {
@@ -84,4 +90,72 @@
   font-size: 14px;
   line-height: 17px;
   color: var(--black);
+}
+
+@media (max-width: 768px) {
+  .aboutMe {
+    padding: 90px 50px 0 50px;
+  }
+  .aboutMe__info-name {
+    font-size: 40px;
+    line-height: 100%;
+    margin-bottom: 16px;
+  }
+  .aboutMe__info-about {
+    font-size: 12px;
+    line-height: 150%;
+    margin-bottom: 20px;
+  }
+  .aboutMe__info-story {
+    max-width: 364px;
+    font-size: 12px;
+    line-height: 150%;
+    margin-bottom: 87px;
+  }
+  .aboutMe__photo {
+    min-width: 255px;
+    height: 307px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .aboutMe {
+    padding: 70px 14px 0 14px;
+  }
+  .aboutMe__container { 
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    gap: 40px;
+  }
+  .aboutMe__photo {
+    min-width: 292px;
+    height: 352px;
+    order: 1;
+  }
+
+  .aboutMe__info {
+    order: 2;
+  }
+  .aboutMe__title {
+    margin-bottom: 60px;
+    padding-bottom: 28px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+  .aboutMe__info-name {
+    font-size: 30px;
+    line-height: 36%;
+    margin-bottom: 20px;
+  }
+  .aboutMe__info-about {
+    font-size: 11px;
+    line-height: 145%;
+  }
+  .aboutMe__info-story {
+    max-width: 292px;
+    font-size: 11px;
+    line-height: 145%;
+    margin-bottom: 40px;
+  }
 }

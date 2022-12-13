@@ -81,3 +81,51 @@
   justify-content: center;
   align-items: center;
 }
+
+@media (max-width: 992px) {
+  .techs {
+    padding: 90px 50px;
+  }
+  .techs__item {
+    width: 84px;
+    height: 57px;
+  }
+  .techs__list {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .techs__stack-about {
+    font-size: 12px;
+    line-height: 150%;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .techs {
+    padding: 70px 18px;
+  }
+  .techs__title {
+    margin-bottom: 60px;
+    padding-bottom: 28px;
+    font-size: 18px;
+    line-height: 22px;
+  }
+  .techs__stack-number {
+    margin-bottom: 24px;
+    font-size: 30px;
+    line-height: 36px;
+  }
+  .techs__stack-about {
+    font-size: 11px;
+    line-height: 16px;
+    margin-bottom: 50px;
+  }
+  .techs__list {
+    justify-content: space-between;
+    padding: 0 52px;
+  }
+  .techs__item {
+    width: 84px;
+    height: 57px;
+  }
+}

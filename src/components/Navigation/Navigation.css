@@ -41,19 +41,19 @@
   height: 0;
 }
 
-@media (min-width: 767.98px) {
+@media (min-width: 769px) {
   .navigation__main {
     display: none;
   }
 }
 
-@media (max-width: 767.98px) {
+@media (max-width: 768px) {
   .navigation {
     margin-bottom: 621px;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
-    gap: 16px;
+    gap: 28px;
   }
   .navigation__movies,
   .navigation__main {

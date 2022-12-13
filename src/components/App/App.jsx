@@ -15,15 +15,23 @@ import HamburgerMenu from '../HamburgerMenu/HamburgerMenu';
 import './App.css';
 
 function App() {
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [loggedIn, setLoggedIn] = useState(true);
   const [hamburgerMenu, setHamburgerMenu] = useState(false);
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
-  }
+  };
   return (
     <div className='page'>
-      <HamburgerMenu loggedIn={loggedIn} handleHamburgerMenu={handleHamburgerMenu} hamburgerMenu={hamburgerMenu} />
-      <Header loggedIn={loggedIn} handleHamburgerMenu={handleHamburgerMenu} hamburgerMenu={hamburgerMenu} />
+      <HamburgerMenu
+        loggedIn={loggedIn}
+        handleHamburgerMenu={handleHamburgerMenu}
+        hamburgerMenu={hamburgerMenu}
+      />
+      <Header
+        loggedIn={loggedIn}
+        handleHamburgerMenu={handleHamburgerMenu}
+        hamburgerMenu={hamburgerMenu}
+      />
       <Routes>
         <Route path='/' element={<Main />} />
         <Route path='/movies' element={<Movies />} />

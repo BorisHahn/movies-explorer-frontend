@@ -20,7 +20,7 @@
 
 .page-not-found__subtitle {
   margin: 0;
-  margin-bottom: 184px;
+  margin-bottom: 284px;
   padding: 0;
   font-family: 'Inter';
   font-style: normal;
@@ -35,9 +35,35 @@
   border: none;
   background: var(--white);
   color: var(--blue);
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
 }
 
 .page-not-found__link:hover {
   opacity: 0.7;
   cursor: pointer;
+}
+
+@media (max-width: 575.98px) {
+  .page-not-found__title {
+    margin-bottom: 10px;
+    font-size: 80px;
+    line-height: 97px;
+  }
+  .page-not-found__subtitle {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .page-not-found__link {
+    font-size: 12px;
+    line-height: 15px;
+    margin-bottom: 30px;
+  }
+  .main {
+    justify-content: flex-end;
+    
+  }
 }

@@ -64,7 +64,7 @@
 .search-form__toggle {
   margin: 0;
   padding: 0;
-  padding-bottom: 39px;
+  padding-bottom: 40px;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -82,4 +82,24 @@
   font-weight: 400;
   font-size: 12px;
   line-height: 150%;
+}
+
+@media (max-width: 768px) {
+  .search-form {
+    padding: 80px 30px 10px 30px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .search-form {
+    padding: 8px 14px 10px 14px;
+  }
+  .search-form__input,
+  .search-form__toggle-text {
+    font-size: 12px;
+    line-height: 18px;
+  }
+  .search-form__toggle {
+    padding-bottom: 44px;
+  }
 }

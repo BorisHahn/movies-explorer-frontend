@@ -73,9 +73,16 @@
   background-repeat: no-repeat;
   background-size: cover;
 }
+@media (max-width: 992px) {
+  .promo__title {
+    margin-bottom: 22px;
+    font-size: 40px;
+    line-height: 50px;
+    max-width: 680px;
+  }
+}
 
-
-@media (max-width: 767.98px) {
+@media (max-width: 768px) {
   .promo {
     margin: 0;
     padding: 140px 30px 76px 30px;
@@ -100,16 +107,36 @@
     order: 1;
   }
   .promo__title {
-    margin-bottom: 22px;
-    font-size: 40px;
-    line-height: 50px;
-    max-width: 680px;
     text-align: center;
   }
   .promo__subtitle {
     margin-bottom: 92px;
     max-width: 260px;
     align-self: center;
+    text-align: center;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .promo {
+    margin: 0;
+    padding: 70px 18px 30px 18px;
+  }
+  .promo__logo {
+    min-width: 210px;
+    min-height: 206px;
+    margin-bottom: 40px;
+  }
+  .promo__title {
+    text-align: center;
+    font-size: 30px;
+    line-height: 127%;
+    margin-bottom: 24px;
+  }
+  .promo__subtitle {
+    font-size: 13px;
+    line-height: 16px;
+    margin-bottom: 80px;
     text-align: center;
   }
 }

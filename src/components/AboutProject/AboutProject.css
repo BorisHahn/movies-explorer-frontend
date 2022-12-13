@@ -27,12 +27,15 @@
 }
 
 .aboutProject__container {
+  padding: 0;
+  margin: 0;
   margin-bottom: 110px;
   display: grid; 
   grid-auto-flow: row dense; 
   grid-template-columns: 1fr 1fr; 
   grid-template-rows: 1fr; 
   column-gap: 40px;
+  list-style: none;
 }
 
 .aboutProject__block-title {
@@ -71,6 +74,7 @@
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
+  list-style: none;
 }
 
 .aboutProject__scale-back {
@@ -99,4 +103,49 @@
 .aboutProject__scale-front_eng {
   color: var(--scale-text-gray);
   background: var(--white);
+}
+
+@media (max-width: 768px) {
+  .aboutProject {
+    padding: 90px 50px;
+  }
+
+  .aboutProject__block-text {
+    font-size: 12px;
+    line-height: 150%;
+  }
+
+  .aboutProject__container {
+    margin-bottom: 93px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .aboutProject {
+    padding: 70px 18px;
+  }
+  .aboutProject__container {
+    margin-bottom: 60px; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: 1fr 1fr; 
+    row-gap: 56px;
+  }
+  .aboutProject__title {
+    font-size: 18px;
+    line-height: 22px;
+    padding-bottom: 28px;
+  }
+  .aboutProject__block-text {
+    font-size: 11px;
+    line-height: 145%;
+    margin-top: 16px;
+  }
+  .aboutProject__scale {
+    font-size: 11px;
+    line-height: 13px;
+  }
+  .aboutProject__scale-back {
+    min-width: 100px;
+  }
+  
 }

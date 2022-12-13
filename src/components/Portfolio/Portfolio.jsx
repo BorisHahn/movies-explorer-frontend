@@ -1,5 +1,4 @@
 import './Portfolio.css';
-import arrow from '../../images/arrow.svg';
 const Portfolio = () => {
   return (
     <section className='portfolio'>
@@ -12,7 +11,7 @@ const Portfolio = () => {
         >
           <li className='portfolio__item'>
             <p className='portfolio__item-text'>Статичный сайт</p>
-            <img src={arrow}></img>
+            <div className='portfolio__item-img'></div>
           </li>
         </a>
         <a
@@ -22,7 +21,7 @@ const Portfolio = () => {
         >
           <li className='portfolio__item'>
             <p className='portfolio__item-text'>Адаптивный сайт</p>
-            <img src={arrow}></img>
+            <div className='portfolio__item-img'></div>
           </li>
         </a>
         <a
@@ -32,7 +31,7 @@ const Portfolio = () => {
         >
           <li className='portfolio__item'>
             <p className='portfolio__item-text'>Одностраничное приложение</p>
-            <img src={arrow}></img>
+            <div className='portfolio__item-img'></div>
           </li>
         </a>
       </ul>

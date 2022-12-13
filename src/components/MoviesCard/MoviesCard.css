@@ -33,6 +33,7 @@
 
 .movies-item__wrapper_saved:hover .movies-item__delete {
   display: block;
+  cursor: pointer;
 }
 
 .movies-item__title {
@@ -70,6 +71,46 @@
   display: none;
 }
 
-.movies-item__delete:hover {
-  cursor: pointer;
+.movies-item__delete_hide {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .movies-item__title {
+    font-size: 13px;
+    line-height: 16px;
+  }
+  .movies-item__wrapper,
+  .movies-item__wrapper_saved {
+    margin-bottom: 15px;
+    padding: 0 14px;
+  }
+  .movies-item__time {
+    margin-bottom: 14px;
+    padding-left: 14px;
+  }
+}
+@media (max-width: 575.98px) {
+  .movies-item__photo {
+    margin-bottom: 14px;
+  }
+  .movies-item__title {
+    font-size: 12px;
+    line-height: 15px;
+  }
+  .movies-item__wrapper,
+  .movies-item__wrapper_saved {
+    margin-bottom: 14px;
+    padding: 0 14px;
+  }
+  .movies-item__time {
+    font-size: 10px;
+    line-height: 12px;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .movies-item__delete {
+    display: block;
+  }
 }
