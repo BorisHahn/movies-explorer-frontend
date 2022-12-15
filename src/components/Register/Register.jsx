@@ -1,7 +1,21 @@
 import { Link } from 'react-router-dom';
-import logo from '../../images/logo.svg';
+import { useCallback } from 'react';
+import useFormAndValidation from '../../utils/hooks/ValidationHook';
 import './Register.css';
-const Register = () => {
+import logo from '../../images/logo.svg';
+import { emailRegExp } from '../../utils/constants';
+
+const Register = ({ handleRegister, message }) => {
+  const { values, handleChangeValid, errors, isValid } = useFormAndValidation();
+
+  const isValidInput = isValid ? 'register__input' : 'register__input register__input_error';
+
+  const handleChange = (e) => {
+    e.preventDefault();
+    handleRegister(values);
+    console.log(values);
+  };
+
   return (
     <main className='register'>
       <div className='register__wrapper'>
@@ -9,45 +23,54 @@ const Register = () => {
           <img className='register__logo' src={logo} alt='Логотип' />
         </Link>
         <h1 className='register__title'>Добро пожаловать!</h1>
-        <form className='register__form'>
+        <form className='register__form' onSubmit={handleChange}>
           <fieldset className='register__fieldset'>
             <div className='register__container'>
-              <label className='register__label'>Имя</label>
+              <label className='register__label' htmlFor='name'>Имя</label>
               <input
-                className='register__input'
-                minLength='2'
-                maxLength='40'
-                value='Борис'
+                className={isValidInput}
+                minLength='3'
+                onChange={handleChangeValid}
+                id='name'
+                name='name'
+                type='text'
+                value={values.name || ''}
                 required
               ></input>
-              <span className='register__error'></span>
+              <span className='register__error'>{errors.name}</span>
             </div>
             <div className='register__container'>
-              <label className='register__label'>E-mail</label>
+              <label className='register__label' htmlFor='E-mail'>E-mail</label>
               <input
                 type='email'
-                className='register__input'
-                minLength='8'
-                maxLength='32'
-                value='pochta@yandex.ru'
+                name='email'
+                id='email'
+                pattern={emailRegExp}
+                className={isValidInput}
+                onChange={handleChangeValid}
+                value={values.email || ''}
                 required
+                autoComplete='off'
               ></input>
-              <span className='register__error'></span>
+              <span className='register__error'>{errors.email}</span>
             </div>
             <div className='register__container'>
-              <label className='register__label'>Пароль</label>
+              <label className='register__label' htmlFor='password'>Пароль</label>
               <input
+                name='password'
                 type='password'
-                className='register__input register__input_error'
-                minLength='5'
-                maxLength='40'
-                value='1234567'
+                id='password'
+                className={isValidInput}
+                onChange={handleChangeValid}
+                minLength='6'
+                value={values.password || ''}
                 required
               ></input>
-              <span className='register__error '>Что-то пошло не так...</span>
+              <span className='register__error '>{errors.password}</span>
             </div>
           </fieldset>
-          <button className='register__button'>Зарегестрироваться</button>
+          <span>{message}</span>
+          <button className='register__button' disabled={!isValid}>Зарегестрироваться</button>
           <p className='register__text'>
             Уже зарегестрированы?{' '}
             <Link className='register__link' to='/signin'>
