@@ -1,12 +1,11 @@
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../../images/logo.svg';
 import hamburger from '../../images/hamburger.svg';
-import closeHamburger from '../../images/close-hamburger.svg';
 import Navigation from '../Navigation/Navigation';
 import ProfileButton from '../ProfileButton/ProfileButton';
 import './Header.css';
 
-const Header = ({ loggedIn, handleHamburgerMenu, hamburgerMenu }) => {
+const Header = ({ loggedIn, handleHamburgerMenu }) => {
   const location = useLocation();
   let headerClass = '';
   if (location.pathname === '/') {

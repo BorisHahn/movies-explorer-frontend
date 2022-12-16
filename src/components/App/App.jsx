@@ -1,5 +1,5 @@
 import React from 'react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import mainApi from '../../utils/MainApi';
@@ -26,25 +26,69 @@ function App() {
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
   };
-
-  const handleRegister = (data) => {
+  
+  const handleGetProfileInfo = () => {
     mainApi
-      .signUp(data)
+      .getProfileInfo()
       .then((res) => {
-        if (res) {
+        if (res.email) {
           setLoggedIn(true);
-          setCurrentUser({ name, email });
+          setCurrentUser(res);
           navigate('/movies');
-          setMessage('Вы успешно зарегестрировались!');
-          handleInfoTooltipClick();
-          history.push('/sign-in');
-          setTimeout(() => setMessage(''), 5000);
         }
       })
       .catch((e) => {
+        checkAuthError(e);
+      });
+  };
+
+  useEffect(() => {
+    handleGetProfileInfo();
+  }, []);
+
+  const handleRegister = ({ name, email, password }) => {
+    mainApi
+      .signUp({ name, email, password })
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          setCurrentUser(res);
+          navigate('/movies');
+        }
+      })
+      .catch((e) => {
+        checkAuthError(e);
         setMessage('Что-то пошло не так! Попробуйте еще раз.');
         setTimeout(() => setMessage(''), 5000);
       });
+  };
+
+  const handleLogin = ({ email, password }) => {
+    mainApi
+      .signIn({ email, password })
+      .then((res) => {
+        if (res) {
+          setLoggedIn(true);
+          setCurrentUser(res);
+          navigate('/movies');
+        }
+      })
+      .then(() => {
+        handleGetProfileInfo();
+      })
+      .catch((e) => {
+        checkAuthError(e);
+        setMessage('Что-то пошло не так! Попробуйте еще раз.');
+        setTimeout(() => setMessage(''), 5000);
+      });
+  };
+
+  const checkAuthError = (error) => {
+    if (error.status === 401) {
+      setIsLogin(false);
+      setCurrentUser(null);
+      navigate('/');
+    }
   };
 
   return (
@@ -69,9 +113,14 @@ function App() {
           >
             <Route
               path='/signup'
-              element={<Register handleRegister={handleRegister} message={message}/>}
+              element={
+                <Register handleRegister={handleRegister} message={message} />
+              }
             />
-            <Route path='/signin' element={<Login />} />
+            <Route
+              path='/signin'
+              element={<Login handleLogin={handleLogin} message={message} />}
+            />
           </Route>
           <Route
             element={<ProtectedRoute loggedIn={loggedIn} navigateTo='/' />}

@@ -44,7 +44,7 @@
 .register__fieldset {
   width: 100%;
   margin: 0;
-  margin-bottom: 69px;
+  margin-bottom: 52px;
   padding: 0;
   border: none;
 }
@@ -156,6 +156,25 @@
 .register__link:hover {
   opacity: 0.7;
   cursor: pointer;
+}
+
+.register__message {
+  margin: 0;
+  margin-bottom: 5px;
+  padding: 0;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 10px;
+  height: 12px;
+  width: 100%;
+  text-align: center;
+  color: var(--like);
+  visibility: hidden;
+}
+
+.register__message_active {
+  visibility: visible;
 }
 
 @media (max-width: 768px) {

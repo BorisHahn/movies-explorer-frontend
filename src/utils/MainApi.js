@@ -5,32 +5,46 @@ class MainApi {
     this._isCredantials = options.credentials;
   }
 
+  getProfileInfo() {
+    return fetch(this._baseUrl + '/users/me', {
+      method: 'GET',
+      headers: this._headers,
+      credentials: this._isCredantials,
+    }).then((result) => this._getResponseData(result));
+  }
+
   signUp({ name, email, password }) {
-    const config = Object.assign(
-      {
-        body: JSON.stringify({ name, email, password }),
-        method: 'POST',
-        headers: this._headers,
-      },
-    );
-    return fetch(this._baseUrl + '/signup', config).then((result) =>
-      this._getResponseData(result)
-    );
+    return fetch(this._baseUrl + '/signup', {
+      body: JSON.stringify({ name, email, password }),
+      method: 'POST',
+      headers: this._headers,
+      credentials: this._isCredantials,
+    }).then((result) => this._getResponseData(result));
+  }
+
+  signIn({ email, password }) {
+    return fetch(this._baseUrl + '/signin', {
+      body: JSON.stringify({ email, password }),
+      method: 'POST',
+      headers: this._headers,
+      credentials: this._isCredantials,
+    }).then((result) => this._getResponseData(result));
   }
 
   _getResponseData(result) {
     if (!result.ok) {
       return Promise.reject(`Ошибка: ${result.status}`);
     }
-    return res.json();
+    return result.json();
   }
 }
 
 const mainApi = new MainApi({
-  baseUrl: 'http://localhost:3001',
+  baseUrl: 'http://localhost:3000',
   headers: {
     'Content-Type': 'application/json',
   },
+  credentials: 'include',
 });
 
 export default mainApi;

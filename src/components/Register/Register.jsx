@@ -1,5 +1,4 @@
 import { Link } from 'react-router-dom';
-import { useCallback } from 'react';
 import useFormAndValidation from '../../utils/hooks/ValidationHook';
 import './Register.css';
 import logo from '../../images/logo.svg';
@@ -9,11 +8,10 @@ const Register = ({ handleRegister, message }) => {
   const { values, handleChangeValid, errors, isValid } = useFormAndValidation();
 
   const isValidInput = isValid ? 'register__input' : 'register__input register__input_error';
-
+  const classErrorMessage = message ? 'register__message register__message_active' : 'register__message';
   const handleChange = (e) => {
     e.preventDefault();
     handleRegister(values);
-    console.log(values);
   };
 
   return (
@@ -69,7 +67,7 @@ const Register = ({ handleRegister, message }) => {
               <span className='register__error '>{errors.password}</span>
             </div>
           </fieldset>
-          <span>{message}</span>
+          <span className={classErrorMessage}>{message}</span>
           <button className='register__button' disabled={!isValid}>Зарегестрироваться</button>
           <p className='register__text'>
             Уже зарегестрированы?{' '}

@@ -1,9 +1,12 @@
+import { React } from 'react'
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import './Profile.css';
 
 const Profile = () => {
+  const currentUser = React.useContext(CurrentUserContext);
   return (
     <main className='profile'>
-      <h1 className='profile__title'>Привет, Борис!</h1>
+      <h1 className='profile__title'>Привет, {currentUser?.name}!</h1>
       <form className='profile__form'>
         <fieldset className='profile__fieldset'>
           <div className='profile__container'>
