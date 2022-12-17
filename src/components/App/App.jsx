@@ -14,11 +14,11 @@ import Profile from '../Profile/Profile';
 import Footer from '../Footer/Footer';
 import NotFound from '../NotFound/NotFound';
 import HamburgerMenu from '../HamburgerMenu/HamburgerMenu';
-
 import './App.css';
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [hamburgerMenu, setHamburgerMenu] = useState(false);
@@ -26,7 +26,7 @@ function App() {
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
   };
-  
+
   const handleGetProfileInfo = () => {
     mainApi
       .getProfileInfo()
@@ -83,6 +83,35 @@ function App() {
       });
   };
 
+  const handleLogout = () => {
+    mainApi
+      .signOut()
+      .then(() => {
+        setLoggedIn(false);
+        setCurrentUser(null);
+      })
+      .catch((e) => {
+        checkAuthError(e);
+        setMessage('Что-то пошло не так! Попробуйте еще раз.');
+        setTimeout(() => setMessage(''), 5000);
+      });
+  };
+
+  const handleEditProfileInfo = ({ name, email }) => {
+    mainApi
+      .editProfileInfo({ name, email })
+      .then((res) => {
+        setCurrentUser(res);
+        setMessage('Данные успешно обновлены!');
+        setTimeout(() => setMessage(''), 5000);
+      })
+      .catch((e) => {
+        checkAuthError(e);
+        setMessage('Что-то пошло не так! Попробуйте еще раз.');
+        setTimeout(() => setMessage(''), 5000);
+      });
+  };
+
   const checkAuthError = (error) => {
     if (error.status === 401) {
       setIsLogin(false);
@@ -127,7 +156,16 @@ function App() {
           >
             <Route path='/movies' element={<Movies />} />
             <Route path='/saved-movies' element={<SavedMovies />} />
-            <Route path='/profile' element={<Profile />} />
+            <Route
+              path='/profile'
+              element={
+                <Profile
+                  handleEditProfileInfo={handleEditProfileInfo}
+                  handleLogout={handleLogout}
+                  message={message}
+                />
+              }
+            />
           </Route>
           <Route path='*' element={<NotFound />} />
         </Routes>

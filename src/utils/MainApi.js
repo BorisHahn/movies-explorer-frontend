@@ -31,6 +31,23 @@ class MainApi {
     }).then((result) => this._getResponseData(result));
   }
 
+  signOut() {
+    return fetch(this._baseUrl + '/signout', {
+      method: 'POST',
+      headers: this._headers,
+      credentials: this._isCredantials,
+    });
+  }
+
+  editProfileInfo({ name, email }) {
+    return fetch(this._baseUrl + '/users/me', {
+      body: JSON.stringify({ name, email }),
+      method: 'PATCH',
+      headers: this._headers,
+      credentials: this._isCredantials,
+    }).then((result) => this._getResponseData(result));
+  }
+
   _getResponseData(result) {
     if (!result.ok) {
       return Promise.reject(`Ошибка: ${result.status}`);

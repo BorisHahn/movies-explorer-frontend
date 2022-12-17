@@ -24,7 +24,7 @@ const Login = ({ handleLogin, message }) => {
             <div className='login__container'>
               <label className='login__label' htmlFor='E-mail'>E-mail</label>
               <input
-                className={isValidInput}
+                className='login__input'
                 minLength='3'
                 onChange={handleChangeValid}
                 type='email'

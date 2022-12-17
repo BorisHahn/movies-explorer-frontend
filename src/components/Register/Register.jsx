@@ -26,7 +26,7 @@ const Register = ({ handleRegister, message }) => {
             <div className='register__container'>
               <label className='register__label' htmlFor='name'>Имя</label>
               <input
-                className={isValidInput}
+                className='register__input'
                 minLength='3'
                 onChange={handleChangeValid}
                 id='name'
@@ -44,7 +44,7 @@ const Register = ({ handleRegister, message }) => {
                 name='email'
                 id='email'
                 pattern={emailRegExp}
-                className={isValidInput}
+                className='register__input'
                 onChange={handleChangeValid}
                 value={values.email || ''}
                 required
