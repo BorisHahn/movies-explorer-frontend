@@ -12,7 +12,9 @@
 
 @media (max-width: 1279.98px) {
   .movies-list {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 339px 339px;
+    gap: 30px;
+    justify-content: center;
   }
 }
 
@@ -28,7 +30,7 @@
 
 @media (max-width: 767.98px) {
   .movies-list {
-    grid-template-columns: 1fr;
+    grid-template-columns: 300px;
     grid-template-rows: auto;
   }
 }

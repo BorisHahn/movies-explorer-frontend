@@ -22,12 +22,11 @@ const MoviesCard = ({ card }) => {
   const likeState = card.like ? like : likeDisabled;
   return (
     <li className='movies-item'>
-      <a href={card.trailerLink}>
+      <a href={card.trailerLink} target='_blank'>
         <img className='movies-item__photo' src={card.image} alt='movie'></img>
       </a>
       <div className={wrapperVisibility}>
-        <h2 className='movies-item__title'>{card.nameRU
-}</h2>
+        <h2 className='movies-item__title' title={card.nameEN}>{card.nameRU}</h2>
         <img className={likeVisibility} src={likeState} alt='like'></img>
         <img
           className={deleteVisibility}

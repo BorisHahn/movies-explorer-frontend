@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+import { shortFilmDuration } from '../../utils/constants';
 import mainApi from '../../utils/MainApi';
 import movieApi from '../../utils/MoviesApi';
 import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
@@ -25,18 +26,18 @@ function App() {
   const [hamburgerMenu, setHamburgerMenu] = useState(false);
   //Информационное сообщение для пользователя
   const [message, setMessage] = useState('');
-  //Фильмы Beatfilm
-  const [beatfilmMovies, setBeatfilmMovies] = useState([]);
-  //Отфильтрованные фильмы Beatfilm
-  const [filteredBeatfilmMovies, setFilteredBeatfilmMovies] = useState([]);
-  //Сохраненные фильмы пользователя
-  const [savedMovies, setSavedMovies] = useState([]);
-  //Отфильтрованные сохрененные фильмы пользователя
-  const [savedFilteredMovies, setSavedFilteredMovies] = useState([]);
+  //Фильмы
+  const [movies, setMovies] = useState([]);
   //Состояние загрузки
-  const [isloading, seIsloading] = useState(false);
-  //Проверка на первый поиск фильмов
-  const [firstSearch, setFirstSearch] = useState(false);
+  const [isloading, setIsloading] = useState(false);
+  //Значение поисковой строки
+  const [searchText, setSearchText] = useState(
+    localStorage.getItem('searchText') || ''
+  );
+  //Значение чекбокса 'короткометражки'
+  const [shortFilmFlag, setShortFilmFlag] = useState(
+    localStorage.getItem('shortFilmFlag') === 'true'
+  );
 
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
@@ -147,16 +148,23 @@ function App() {
     }
   };
 
+  const gelLocalMovies = () => {
+    return JSON.parse(localStorage.getItem('allMovies')) || [];
+  };
+
   //Получаем все фильмы с BeatfilmMoviesApi
 
-  const getMoviesFromBeatFilm = () => {
-    seIsloading(true);
-    movieApi
+  const getMovies = () => {
+    let movies = gelLocalMovies();
+    if (Array.isArray(movies) && movies.length > 0) {
+      return Promise.resolve(movies);
+    }
+    setIsloading(true);
+    return movieApi
       .getMoviesFromBeatFilm()
       .then((res) => {
-        setBeatfilmMovies(res);
-        seIsloading(false);
-        console.log(res);
+        localStorage.setItem('allMovies', JSON.stringify(res));
+        return res;
       })
       .catch((e) => {
         checkAuthError(e);
@@ -164,17 +172,62 @@ function App() {
           'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
         );
         setTimeout(() => setMessage(''), 5000);
+      })
+      .then((value = []) => {
+        setIsloading(false);
+        return value;
       });
   };
+  // Фильтрация списка фильмов
+
+  const filterMovies = (
+    movies,
+    searchText,
+    shortFilmFlag,
+    shortFilmDuration
+  ) => {
+    const lowerText = searchText.toLowerCase();
+    return movies.filter((movie) => {
+      return (
+        (movie.nameRU.toLowerCase().includes(lowerText) ||
+          movie.nameEN.toLowerCase().includes(lowerText)) &&
+        (!shortFilmFlag || movie.duration <= shortFilmDuration)
+      );
+    });
+  };
+  // Отправка поискового запроса
+
+  const onSubmit = () => {
+    getMovies().then((res) =>
+      setMovies(filterMovies(res, searchText, shortFilmFlag, shortFilmDuration))
+    );
+    localStorage.setItem('searchText', searchText);
+    localStorage.setItem('shortFilmFlag', shortFilmFlag);
+  };
+
+  const applyFilter = () => {
+    setMovies(
+      filterMovies(
+        gelLocalMovies(),
+        searchText,
+        shortFilmFlag,
+        shortFilmDuration
+      )
+    );
+  };
+
+  //При монтировании приложения получаем значения фильтра и фильмы
+
+  useEffect(applyFilter, []);
+  useEffect(applyFilter, [shortFilmFlag]);
 
   //Получаем сохраненные фильмы пользователя
 
   const getSavedMoviesByUser = () => {
-    mainApi
+    return mainApi
       .getSavedMoviesByUser()
       .then((res) => {
-        setSavedMovies(res);
-        setSavedFilteredMovies(res);
+        return res;
       })
       .catch((e) => {
         checkAuthError(e);
@@ -198,8 +251,8 @@ function App() {
     mainApi
       .addMovieToSavedMovies(movie)
       .then((res) => {
-        setSavedMovies([...savedMovies, res]);
-        setSavedFilteredMovies([...savedFilteredMovies, res]);
+        // setSavedMovies([...savedMovies, res]);
+        // setSavedFilteredMovies([...savedFilteredMovies, res]);
       })
       .catch((e) => {
         checkAuthError(e);
@@ -217,10 +270,10 @@ function App() {
     mainApi
       .deleteMovieFromSavedMovies(movie._id)
       .then((res) => {
-        const newSavedMovies = filterMovies(savedMovies, id);
-        const newFilteredSavedMovies = filterMovies(savedFilteredMovies, id);
-        setSavedMovies([newSavedMovies]);
-        setFilteredSavedMovies([newFilteredSavedMovies]);
+        // const newSavedMovies = filterMovies(savedMovies, id);
+        // const newFilteredSavedMovies = filterMovies(savedFilteredMovies, id);
+        // setSavedMovies([newSavedMovies]);
+        // setFilteredSavedMovies([newFilteredSavedMovies]);
       })
       .catch((e) => {
         checkAuthError(e);
@@ -267,18 +320,28 @@ function App() {
               path='/movies'
               element={
                 <Movies
-                  movies={beatfilmMovies}
-                  filteredMovies={filteredBeatfilmMovies}
-                  setFilteredMovies={setFilteredBeatfilmMovies}
-                  getMoviesFromBeatFilm={getMoviesFromBeatFilm}
+                  movies={movies}
+                  searchText={searchText}
+                  setSearchText={setSearchText}
+                  shortFilmFlag={shortFilmFlag}
+                  setShortFilmFlag={setShortFilmFlag}
+                  onSubmit={onSubmit}
                   isloading={isloading}
                   addMovieToSavedMovies={addMovieToSavedMovies}
                   deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
-                  setFirstSearch={setFirstSearch}
                 />
               }
             />
-            <Route path='/saved-movies' element={<SavedMovies />} />
+            <Route
+              path='/saved-movies'
+              element={
+                <SavedMovies
+                  searchText={searchText}
+                  setSearchText={setSearchText}
+                  setShortFilmFlag={setShortFilmFlag}
+                />
+              }
+            />
             <Route
               path='/profile'
               element={
