@@ -4,22 +4,38 @@ import like from '../../images/like.svg';
 import deleteMovie from '../../images/delete-movie.svg';
 import './MoviesCard.css';
 
-const MoviesCard = ({card}) => {
+const MoviesCard = ({ card }) => {
   const location = useLocation();
 
-  const likeVisibility = location.pathname === '/movies' ? 'movies-item__like' : 'movies-item__like_hide';
-  const deleteVisibility = location.pathname === '/saved-movies' ? 'movies-item__delete' : 'movies-item__delete_hide';
-  const wrapperVisibility = location.pathname === '/saved-movies' ? 'movies-item__wrapper_saved' : 'movies-item__wrapper';
+  const likeVisibility =
+    location.pathname === '/movies'
+      ? 'movies-item__like'
+      : 'movies-item__like_hide';
+  const deleteVisibility =
+    location.pathname === '/saved-movies'
+      ? 'movies-item__delete'
+      : 'movies-item__delete_hide';
+  const wrapperVisibility =
+    location.pathname === '/saved-movies'
+      ? 'movies-item__wrapper_saved'
+      : 'movies-item__wrapper';
   const likeState = card.like ? like : likeDisabled;
   return (
     <li className='movies-item'>
-      <img className='movies-item__photo' src={card.img} alt='movie'></img>
+      <a href={card.trailerLink}>
+        <img className='movies-item__photo' src={card.image} alt='movie'></img>
+      </a>
       <div className={wrapperVisibility}>
-        <h2 className='movies-item__title'>{card.name}</h2>
+        <h2 className='movies-item__title'>{card.nameRU
+}</h2>
         <img className={likeVisibility} src={likeState} alt='like'></img>
-        <img className={deleteVisibility} src={deleteMovie} alt={card.alt}></img>
+        <img
+          className={deleteVisibility}
+          src={deleteMovie}
+          alt={card.alt}
+        ></img>
       </div>
-      <p className='movies-item__time'>{card.time}</p>
+      <p className='movies-item__time'>{card.duration} мин.</p>
     </li>
   );
 };

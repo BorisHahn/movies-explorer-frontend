@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { React } from 'react';
 import useFormAndValidation from '../../utils/hooks/ValidationHook';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
@@ -7,6 +7,7 @@ import './Profile.css';
 
 const Profile = ({ handleEditProfileInfo, handleLogout, message }) => {
   const currentUser = useContext(CurrentUserContext);
+  const [isSameUserValue, setIsSameUserValue] = useState(false);
   const { values, handleChangeValid, errors, isValid, resetForm } =
     useFormAndValidation();
   const classErrorMessage = message
@@ -14,7 +15,18 @@ const Profile = ({ handleEditProfileInfo, handleLogout, message }) => {
     : 'profile__message';
 
   useEffect(() => {
-    resetForm({ name: currentUser?.name, email: currentUser?.email });
+    if (
+      values.name !== currentUser.name ||
+      values.email !== currentUser.email
+    ) {
+      setIsSameUserValue(true);
+    } else {
+      setIsSameUserValue(false);
+    }
+  }, [values?.name, values?.email]);
+
+  useEffect(() => {
+    resetForm({ name: currentUser.name, email: currentUser.email });
   }, [currentUser]);
 
   const handleChange = (e) => {
@@ -68,7 +80,10 @@ const Profile = ({ handleEditProfileInfo, handleLogout, message }) => {
           <span className='profile__error'>{errors.email}</span>
         </fieldset>
         <span className={classErrorMessage}>{message}</span>
-        <button className='profile__button' disabled={!isValid}>
+        <button
+          className='profile__button'
+          disabled={!isValid || !isSameUserValue}
+        >
           Редактировать
         </button>
         <button

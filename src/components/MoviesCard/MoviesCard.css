@@ -15,7 +15,10 @@
   margin: 0;
   margin-bottom: 16px;
   padding: 0;
-  width: 100%;
+  width: 364px;
+  height: 203px;
+  cursor: pointer;
+  object-fit: cover;
 }
 
 .movies-item__wrapper,
