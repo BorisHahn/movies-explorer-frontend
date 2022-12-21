@@ -1,24 +1,28 @@
 import SearchForm from '../SearchForm/SearchForm';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
+import Preloader from '../Preloader/Preloader';
 import './SavedMovies.css';
 
-const SavaedMovies = ({
-  searchText,
-  setSearchText,
-  shortFilmFlag,
-  setShortFilmFlag,
+const SavedMovies = ({
+  movies,
+  deleteMovieFromSavedMovies,
+  isloading,
+  message,
+  setMessage,
 }) => {
   return (
     <main className='saved-movies'>
-      <SearchForm
-        searchText={searchText}
-        setSearchText={setSearchText}
-        shortFilmFlag={shortFilmFlag}
-        setShortFilmFlag={setShortFilmFlag}
-      />
-      <MoviesCardList />
+      <SearchForm message={message} setMessage={setMessage} />
+      {isloading ? (
+        <Preloader />
+      ) : (
+        <MoviesCardList
+          movies={movies}
+          deleteMovie={deleteMovieFromSavedMovies}
+        />
+      )}
     </main>
   );
 };
 
-export default SavaedMovies;
+export default SavedMovies;

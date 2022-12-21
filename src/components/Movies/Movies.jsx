@@ -14,6 +14,8 @@ const Movies = ({
   isloading,
   addMovieToSavedMovies,
   deleteMovieFromSavedMovies,
+  message,
+  setMessage
 }) => {
   return (
     <main className='movies'>
@@ -23,6 +25,8 @@ const Movies = ({
         shortFilmFlag={shortFilmFlag}
         setShortFilmFlag={setShortFilmFlag}
         onSubmit={onSubmit}
+        message={message}
+        setMessage={setMessage}
       />
       {isloading ? (
         <Preloader />

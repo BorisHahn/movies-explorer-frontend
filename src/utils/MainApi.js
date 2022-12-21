@@ -66,7 +66,7 @@ class MainApi {
   }
 
   deleteMovieFromSavedMovies(id) {
-    return fetch(this._baseUrl + `/movies/:${id}`, {
+    return fetch(this._baseUrl + `/movies/${id}`, {
       method: 'DELETE',
       headers: this._headers,
       credentials: this._isCredantials,

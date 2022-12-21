@@ -28,6 +28,8 @@ function App() {
   const [message, setMessage] = useState('');
   //Фильмы
   const [movies, setMovies] = useState([]);
+  //Сохраненные фильмы
+  const [savedMovies, setSavedMovies] = useState([]);
   //Состояние загрузки
   const [isloading, setIsloading] = useState(false);
   //Значение поисковой строки
@@ -224,16 +226,18 @@ function App() {
   //Получаем сохраненные фильмы пользователя
 
   const getSavedMoviesByUser = () => {
+    setIsloading(true);
     return mainApi
       .getSavedMoviesByUser()
       .then((res) => {
-        return res;
+        setSavedMovies([...res]);
       })
       .catch((e) => {
         checkAuthError(e);
         setMessage('Не удалось получить сохраненные фильмы.');
         setTimeout(() => setMessage(''), 5000);
-      });
+      })
+      .finally(setIsloading(false));
   };
 
   //Получаем сохраненные фильмы пользователя при входе в учетную запись
@@ -245,14 +249,12 @@ function App() {
   }, [loggedIn]);
 
   //Добавляем фильм в сохраненные
-
   const addMovieToSavedMovies = (id) => {
-    const movie = findedMovies.find((item) => item.movieId === id);
+    const movie = movies.find((item) => item.movieId === id);
     mainApi
       .addMovieToSavedMovies(movie)
       .then((res) => {
-        // setSavedMovies([...savedMovies, res]);
-        // setSavedFilteredMovies([...savedFilteredMovies, res]);
+        setSavedMovies([...savedMovies, res]);
       })
       .catch((e) => {
         checkAuthError(e);
@@ -262,24 +264,26 @@ function App() {
   };
 
   //Удаляем фильм из сохраненных
-
   const deleteMovieFromSavedMovies = (id) => {
     const movie = savedMovies.find((item) => item.movieId === id);
-    const filterMovies = (movies, movieId) =>
-      movies.filter((item) => item.movieId !== movieId);
+    const filterMovies = (movies, movie) => {
+      const filterSavedMovies = movies.filter(
+        (item) => item.movieId !== movie.movieId
+      );
+      return filterSavedMovies;
+    };
+    setIsloading(true);
     mainApi
       .deleteMovieFromSavedMovies(movie._id)
-      .then((res) => {
-        // const newSavedMovies = filterMovies(savedMovies, id);
-        // const newFilteredSavedMovies = filterMovies(savedFilteredMovies, id);
-        // setSavedMovies([newSavedMovies]);
-        // setFilteredSavedMovies([newFilteredSavedMovies]);
+      .then(() => {
+        setSavedMovies(filterMovies(savedMovies, movie));
       })
       .catch((e) => {
         checkAuthError(e);
         setMessage('Не удалось удалить сохраненный фильм');
         setTimeout(() => setMessage(''), 5000);
-      });
+      })
+      .finally(setIsloading(false));
   };
 
   return (
@@ -320,7 +324,14 @@ function App() {
               path='/movies'
               element={
                 <Movies
-                  movies={movies}
+                  movies={movies.map((item) => {
+                    return {
+                      ...item,
+                      isLiked: savedMovies.some(
+                        (m) => m.movieId === item.movieId
+                      ),
+                    };
+                  })}
                   searchText={searchText}
                   setSearchText={setSearchText}
                   shortFilmFlag={shortFilmFlag}
@@ -329,6 +340,8 @@ function App() {
                   isloading={isloading}
                   addMovieToSavedMovies={addMovieToSavedMovies}
                   deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
+                  message={message}
+                  setMessage={setMessage}
                 />
               }
             />
@@ -336,9 +349,12 @@ function App() {
               path='/saved-movies'
               element={
                 <SavedMovies
-                  searchText={searchText}
-                  setSearchText={setSearchText}
-                  setShortFilmFlag={setShortFilmFlag}
+                  movies={savedMovies}
+                  addMovieToSavedMovies={addMovieToSavedMovies}
+                  deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
+                  isloading={isloading}
+                  message={message}
+                  setMessage={setMessage}
                 />
               }
             />

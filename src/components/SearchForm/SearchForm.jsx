@@ -6,10 +6,17 @@ const SearchForm = ({
   setSearchText,
   shortFilmFlag,
   setShortFilmFlag,
-  onSubmit
+  onSubmit,
+  message,
+  setMessage,
 }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
+    if (searchText === '') {
+      setMessage('Введите запрос в поисковую строку');
+      setTimeout(() => setMessage(''), 5000);
+      return;
+    }
     onSubmit();
   };
 
@@ -42,6 +49,7 @@ const SearchForm = ({
           Найти
         </button>
       </div>
+      <span className='search-form__error '>{message}</span>
       <div className='search-form__toggle'>
         <FilterCheckbox
           handleToggleCheckBox={handleToggleCheckBox}

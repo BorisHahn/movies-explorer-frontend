@@ -48,7 +48,7 @@ const Login = ({ handleLogin, message }) => {
                 value={values.password || ''}
                 required
               ></input>
-              <span className={classErrorMessage}>{errors.password}</span>
+              <span className='login__error'>{errors.password}</span>
             </div>
           </fieldset>
           <span className={classErrorMessage}>{message}</span>
