@@ -22,6 +22,7 @@ const SearchForm = ({
 
   //Переключаем состояние чекбокса короткометражек
   const handleToggleCheckBox = (e) => {
+    console.log(e.target.checked);
     setShortFilmFlag(e.target.checked);
   };
 

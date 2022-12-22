@@ -9,10 +9,23 @@ const SavedMovies = ({
   isloading,
   message,
   setMessage,
+  searchText,
+  setSearchText,
+  shortFilmFlag,
+  setShortFilmFlag,
+  onSubmit,
 }) => {
   return (
     <main className='saved-movies'>
-      <SearchForm message={message} setMessage={setMessage} />
+      <SearchForm
+        message={message}
+        setMessage={setMessage}
+        searchText={searchText}
+        setSearchText={setSearchText}
+        shortFilmFlag={shortFilmFlag}
+        setShortFilmFlag={setShortFilmFlag}
+        onSubmit={onSubmit}
+      />
       {isloading ? (
         <Preloader />
       ) : (

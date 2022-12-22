@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { shortFilmDuration } from '../../utils/constants';
 import mainApi from '../../utils/MainApi';
@@ -20,7 +20,6 @@ import './App.css';
 
 function App() {
   const navigate = useNavigate();
-  const location = useLocation();
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [hamburgerMenu, setHamburgerMenu] = useState(false);
@@ -30,16 +29,24 @@ function App() {
   const [movies, setMovies] = useState([]);
   //Сохраненные фильмы
   const [savedMovies, setSavedMovies] = useState([]);
+  //Отфильтрованные сохраненные фильмы
+  const [filtredSavedMovies, setFiltredSavedMovies] = useState([]);
   //Состояние загрузки
   const [isloading, setIsloading] = useState(false);
   //Значение поисковой строки
   const [searchText, setSearchText] = useState(
     localStorage.getItem('searchText') || ''
   );
+  //Значение поисковой строки на странице Сохраненные фильмы
+  const [searchTextSaved, setSearchTextSaved] = useState('');
   //Значение чекбокса 'короткометражки'
   const [shortFilmFlag, setShortFilmFlag] = useState(
     localStorage.getItem('shortFilmFlag') === 'true'
   );
+  //Значение чекбокса 'короткометражки' на странице Сохраненные фильмы
+  const [shortFilmFlagSaved, setShortFilmFlagSaved] = useState(false);
+  //Количество карточек добавляется на опредленном разрешении
+  const [limit, setLimit] = useState(0);
 
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
@@ -207,6 +214,19 @@ function App() {
     localStorage.setItem('shortFilmFlag', shortFilmFlag);
   };
 
+  // Отправка поискового запроса на странице Сохраненные фильмы
+
+  const onSubmitSaved = () => {
+    setFiltredSavedMovies(
+      filterMovies(
+        savedMovies,
+        searchTextSaved,
+        shortFilmFlagSaved,
+        shortFilmDuration
+      )
+    );
+  };
+
   const applyFilter = () => {
     setMovies(
       filterMovies(
@@ -218,10 +238,24 @@ function App() {
     );
   };
 
+  const applyFilterSaved = () => {
+    setFiltredSavedMovies(
+      filterMovies(
+        savedMovies,
+        searchTextSaved,
+        shortFilmFlagSaved,
+        shortFilmDuration
+      )
+    );
+  };
+
   //При монтировании приложения получаем значения фильтра и фильмы
 
   useEffect(applyFilter, []);
+  useEffect(applyFilterSaved, [savedMovies]);
+
   useEffect(applyFilter, [shortFilmFlag]);
+  useEffect(applyFilterSaved, [shortFilmFlagSaved]);
 
   //Получаем сохраненные фильмы пользователя
 
@@ -285,6 +319,28 @@ function App() {
       })
       .finally(setIsloading(false));
   };
+  //Отрисвока карточек с лайками в главном массиве фильмов
+
+  const calcLikeCards = (array) => {
+    return array.map((item) => {
+      return {
+        ...item,
+        isLiked: savedMovies.some((m) => m.movieId === item.movieId),
+      };
+    });
+  };
+
+  //Отображение карточек в блоке результата в зависимости от разрешения
+
+  const setCardQty = (array, limit = 0) => {
+    if (window.innerWidth >= 1280) {
+      return array.slice(0, 12 + limit);
+    } else if (window.innerWidth >= 768) {
+      return array.slice(0, 8 + limit);
+    } else if (window.innerWidth <= 480) {
+      return array.slice(0, 5 + limit);
+    }
+  };
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -324,14 +380,7 @@ function App() {
               path='/movies'
               element={
                 <Movies
-                  movies={movies.map((item) => {
-                    return {
-                      ...item,
-                      isLiked: savedMovies.some(
-                        (m) => m.movieId === item.movieId
-                      ),
-                    };
-                  })}
+                  movies={setCardQty(calcLikeCards(movies))}
                   searchText={searchText}
                   setSearchText={setSearchText}
                   shortFilmFlag={shortFilmFlag}
@@ -349,12 +398,17 @@ function App() {
               path='/saved-movies'
               element={
                 <SavedMovies
-                  movies={savedMovies}
+                  movies={filtredSavedMovies}
                   addMovieToSavedMovies={addMovieToSavedMovies}
                   deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
                   isloading={isloading}
                   message={message}
                   setMessage={setMessage}
+                  searchText={searchTextSaved}
+                  setSearchText={setSearchTextSaved}
+                  shortFilmFlag={shortFilmFlagSaved}
+                  setShortFilmFlag={setShortFilmFlagSaved}
+                  onSubmit={onSubmitSaved}
                 />
               }
             />

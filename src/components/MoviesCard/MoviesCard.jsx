@@ -8,7 +8,11 @@ const MoviesCard = ({ card, addMovie, deleteMovie }) => {
   const location = useLocation();
 
   const handleAdd = (card) => {
-    addMovie(card.movieId);
+    if (card.isLiked) {
+      deleteMovie(card.movieId);
+    } else {
+      addMovie(card.movieId);
+    }
   };
 
   const handleDelete = (card) => {
@@ -29,12 +33,16 @@ const MoviesCard = ({ card, addMovie, deleteMovie }) => {
     location.pathname === '/saved-movies'
       ? 'movies-item__wrapper_saved'
       : 'movies-item__wrapper';
-      
+
   const likeState = card.isLiked ? like : likeDisabled;
   return (
     <li className='movies-item'>
       <a href={card.trailerLink} target='_blank'>
-        <img className='movies-item__photo' src={card.image} alt={card.alt}></img>
+        <img
+          className='movies-item__photo'
+          src={card.image}
+          alt={card.alt}
+        ></img>
       </a>
       <div className={wrapperVisibility}>
         <h2 className='movies-item__title' title={card.nameEN}>
