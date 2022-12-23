@@ -15,7 +15,9 @@ const Movies = ({
   addMovieToSavedMovies,
   deleteMovieFromSavedMovies,
   message,
-  setMessage
+  setMessage,
+  loadMore,
+  isLoadButtonVisible
 }) => {
   return (
     <main className='movies'>
@@ -38,7 +40,7 @@ const Movies = ({
         />
       )}
 
-      <LoadMore />
+      <LoadMore loadMore={loadMore} isLoadButtonVisible={isLoadButtonVisible}/>
     </main>
   );
 };

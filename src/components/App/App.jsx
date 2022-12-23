@@ -45,8 +45,8 @@ function App() {
   );
   //Значение чекбокса 'короткометражки' на странице Сохраненные фильмы
   const [shortFilmFlagSaved, setShortFilmFlagSaved] = useState(false);
-  //Количество карточек добавляется на опредленном разрешении
-  const [limit, setLimit] = useState(0);
+  //Видимость кнопки 'еще'
+  const [isLoadButtonVisible, setIsLoadButtonVisible] = useState(true);
 
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
@@ -208,7 +208,11 @@ function App() {
 
   const onSubmit = () => {
     getMovies().then((res) =>
-      setMovies(filterMovies(res, searchText, shortFilmFlag, shortFilmDuration))
+      setMovies(
+        sliceMoviesArray(
+          filterMovies(res, searchText, shortFilmFlag, shortFilmDuration)
+        )
+      )
     );
     localStorage.setItem('searchText', searchText);
     localStorage.setItem('shortFilmFlag', shortFilmFlag);
@@ -229,11 +233,13 @@ function App() {
 
   const applyFilter = () => {
     setMovies(
-      filterMovies(
-        gelLocalMovies(),
-        searchText,
-        shortFilmFlag,
-        shortFilmDuration
+      sliceMoviesArray(
+        filterMovies(
+          gelLocalMovies(),
+          searchText,
+          shortFilmFlag,
+          shortFilmDuration
+        )
       )
     );
   };
@@ -330,17 +336,55 @@ function App() {
     });
   };
 
-  //Отображение карточек в блоке результата в зависимости от разрешения
+  //Устанавливаю количество отображаемых карточек и добавляемых в зависимости от разрешения
 
-  const setCardQty = (array, limit = 0) => {
+  const setCardQty = () => {
     if (window.innerWidth >= 1280) {
-      return array.slice(0, 12 + limit);
+      return { initial: 12, addCard: 3 };
     } else if (window.innerWidth >= 768) {
-      return array.slice(0, 8 + limit);
-    } else if (window.innerWidth <= 480) {
-      return array.slice(0, 5 + limit);
+      return { initial: 8, addCard: 2 };
+    } else {
+      return { initial: 5, addCard: 2 };
     }
   };
+
+  //Обрезаю массив с карточками
+
+  const sliceMoviesArray = (movies) => {
+    const quantity = setCardQty();
+    if (movies.length > quantity.initial) {
+      const slicedMoviesArray = movies.slice(0, quantity.initial);
+      return slicedMoviesArray;
+    }
+    return movies;
+  };
+
+  // дозагрузка фильмов по кнопке еще
+
+  const loadMore = () => {
+    const originMovies = filterMovies(
+      gelLocalMovies(),
+      searchText,
+      shortFilmFlag,
+      shortFilmDuration
+    );
+    const quantity = setCardQty();
+    const initial = movies.length;
+    const add = quantity.addCard;
+    const end = initial + add;
+    const addedCards = originMovies.slice(initial, end);
+    setMovies([...movies, ...addedCards]);
+  };
+
+  useEffect(() => {
+    const array = filterMovies(
+      gelLocalMovies(),
+      searchText,
+      shortFilmFlag,
+      shortFilmDuration
+    );
+    setIsLoadButtonVisible(array.length !== movies.length);
+  }, [movies]);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -380,7 +424,7 @@ function App() {
               path='/movies'
               element={
                 <Movies
-                  movies={setCardQty(calcLikeCards(movies))}
+                  movies={calcLikeCards(movies)}
                   searchText={searchText}
                   setSearchText={setSearchText}
                   shortFilmFlag={shortFilmFlag}
@@ -391,6 +435,8 @@ function App() {
                   deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
                   message={message}
                   setMessage={setMessage}
+                  loadMore={loadMore}
+                  isLoadButtonVisible={isLoadButtonVisible}
                 />
               }
             />
@@ -398,7 +444,7 @@ function App() {
               path='/saved-movies'
               element={
                 <SavedMovies
-                  movies={filtredSavedMovies}
+                  movies={sliceMoviesArray(filtredSavedMovies)}
                   addMovieToSavedMovies={addMovieToSavedMovies}
                   deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
                   isloading={isloading}
