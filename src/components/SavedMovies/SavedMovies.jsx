@@ -14,6 +14,7 @@ const SavedMovies = ({
   shortFilmFlag,
   setShortFilmFlag,
   onSubmit,
+  isNothingFind,
 }) => {
   return (
     <main className='saved-movies'>
@@ -30,6 +31,7 @@ const SavedMovies = ({
         <Preloader />
       ) : (
         <MoviesCardList
+          isNothingFind={isNothingFind}
           movies={movies}
           deleteMovie={deleteMovieFromSavedMovies}
         />

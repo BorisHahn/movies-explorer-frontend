@@ -10,6 +10,19 @@
   box-sizing: border-box;
 }
 
+.movie-list__banner {
+  margin: 0;
+  padding: 0;
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 22px;
+  line-height: 27px;
+  text-align: center;
+  grid-column-start: 1;
+  grid-column-end: 4;
+}
+
 @media (max-width: 1279.98px) {
   .movies-list {
     grid-template-columns: 339px 339px;

@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
-import { Route, Routes, useNavigate } from 'react-router-dom';
+import { Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import { shortFilmDuration } from '../../utils/constants';
 import mainApi from '../../utils/MainApi';
@@ -20,6 +20,7 @@ import './App.css';
 
 function App() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [currentUser, setCurrentUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(false);
   const [hamburgerMenu, setHamburgerMenu] = useState(false);
@@ -47,6 +48,8 @@ function App() {
   const [shortFilmFlagSaved, setShortFilmFlagSaved] = useState(false);
   //Видимость кнопки 'еще'
   const [isLoadButtonVisible, setIsLoadButtonVisible] = useState(true);
+  //Видимость надписи ничего не найдено
+  const [isNothingFind, setIsNothingFind] = useState(false);
 
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
@@ -88,7 +91,7 @@ function App() {
       .catch((e) => {
         checkAuthError(e);
         setMessage('Что-то пошло не так! Попробуйте еще раз.');
-        setTimeout(() => setMessage(''), 5000);
+        setTimeout(() => setMessage(''), 3000);
       });
   };
 
@@ -110,7 +113,7 @@ function App() {
       .catch((e) => {
         checkAuthError(e);
         setMessage('Что-то пошло не так! Попробуйте еще раз.');
-        setTimeout(() => setMessage(''), 5000);
+        setTimeout(() => setMessage(''), 3000);
       });
   };
 
@@ -126,7 +129,7 @@ function App() {
       .catch((e) => {
         checkAuthError(e);
         setMessage('Что-то пошло не так! Попробуйте еще раз.');
-        setTimeout(() => setMessage(''), 5000);
+        setTimeout(() => setMessage(''), 3000);
       });
   };
 
@@ -138,12 +141,12 @@ function App() {
       .then((res) => {
         setCurrentUser(res);
         setMessage('Данные успешно обновлены!');
-        setTimeout(() => setMessage(''), 5000);
+        setTimeout(() => setMessage(''), 3000);
       })
       .catch((e) => {
         checkAuthError(e);
         setMessage('Что-то пошло не так! Попробуйте еще раз.');
-        setTimeout(() => setMessage(''), 5000);
+        setTimeout(() => setMessage(''), 3000);
       });
   };
 
@@ -180,13 +183,14 @@ function App() {
         setMessage(
           'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
         );
-        setTimeout(() => setMessage(''), 5000);
+        setTimeout(() => setMessage(''), 3000);
       })
       .then((value = []) => {
         setIsloading(false);
         return value;
       });
   };
+
   // Фильтрация списка фильмов
 
   const filterMovies = (
@@ -204,9 +208,12 @@ function App() {
       );
     });
   };
+
   // Отправка поискового запроса
 
   const onSubmit = () => {
+    setMessage('');
+    setIsNothingFind(false);
     getMovies().then((res) =>
       setMovies(
         sliceMoviesArray(
@@ -221,6 +228,7 @@ function App() {
   // Отправка поискового запроса на странице Сохраненные фильмы
 
   const onSubmitSaved = () => {
+    setMessage('');
     setFiltredSavedMovies(
       filterMovies(
         savedMovies,
@@ -275,7 +283,7 @@ function App() {
       .catch((e) => {
         checkAuthError(e);
         setMessage('Не удалось получить сохраненные фильмы.');
-        setTimeout(() => setMessage(''), 5000);
+        setTimeout(() => setMessage(''), 3000);
       })
       .finally(setIsloading(false));
   };
@@ -289,6 +297,7 @@ function App() {
   }, [loggedIn]);
 
   //Добавляем фильм в сохраненные
+
   const addMovieToSavedMovies = (id) => {
     const movie = movies.find((item) => item.movieId === id);
     mainApi
@@ -299,11 +308,12 @@ function App() {
       .catch((e) => {
         checkAuthError(e);
         setMessage('Не удалось сохранить фильм');
-        setTimeout(() => setMessage(''), 5000);
+        setTimeout(() => setMessage(''), 3000);
       });
   };
 
   //Удаляем фильм из сохраненных
+
   const deleteMovieFromSavedMovies = (id) => {
     const movie = savedMovies.find((item) => item.movieId === id);
     const filterMovies = (movies, movie) => {
@@ -321,10 +331,11 @@ function App() {
       .catch((e) => {
         checkAuthError(e);
         setMessage('Не удалось удалить сохраненный фильм');
-        setTimeout(() => setMessage(''), 5000);
+        setTimeout(() => setMessage(''), 3000);
       })
       .finally(setIsloading(false));
   };
+
   //Отрисвока карточек с лайками в главном массиве фильмов
 
   const calcLikeCards = (array) => {
@@ -359,6 +370,29 @@ function App() {
     return movies;
   };
 
+  //Обновление количество отрисованных карточек 
+
+  let updateMoviesTimeout = null;
+  const updateMoviesList = () => {
+    clearTimeout(updateMoviesTimeout);
+    updateMoviesTimeout = setTimeout(() => {
+      setMovies(sliceMoviesArray(filterMovies(
+        gelLocalMovies(),
+        searchText,
+        shortFilmFlag,
+        shortFilmDuration
+      )));
+    }, 500);
+  };
+
+  useEffect(() => {
+    if (!['/movies', '/saved-movies'].includes(location.pathname)) {
+      return;
+    }
+    window.addEventListener('resize', updateMoviesList);
+    return () => window.removeEventListener('resize', updateMoviesList);
+  });
+  
   // дозагрузка фильмов по кнопке еще
 
   const loadMore = () => {
@@ -383,6 +417,7 @@ function App() {
       shortFilmFlag,
       shortFilmDuration
     );
+    setIsNothingFind(array.length === 0);
     setIsLoadButtonVisible(array.length !== movies.length);
   }, [movies]);
 
@@ -437,6 +472,7 @@ function App() {
                   setMessage={setMessage}
                   loadMore={loadMore}
                   isLoadButtonVisible={isLoadButtonVisible}
+                  isNothingFind={isNothingFind}
                 />
               }
             />
