@@ -1,8 +1,8 @@
 class MainApi {
-  constructor(options) {
-    this._baseUrl = options.baseUrl;
-    this._headers = options.headers;
-    this._credentials = options.credentials;
+  constructor({ baseUrl, headers, credentials }) {
+    this._baseUrl = baseUrl;
+    this._headers = headers;
+    this._credentials = credentials;
   }
 
   getProfileInfo() {
