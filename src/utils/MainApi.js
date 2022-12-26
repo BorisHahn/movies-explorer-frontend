@@ -82,7 +82,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  baseUrl: 'http://localhost:3000',
+  baseUrl: 'api.gaidukevich.movie.nomoredomains.club',
   headers: {
     'Content-Type': 'application/json',
   },

@@ -1,7 +1,7 @@
 import './MoviesCardList.css';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-const MoviesCardList = ({ movies, addMovie, deleteMovie, isNothingFind }) => {
+const MoviesCardList = ({ movies, addMovie, deleteMovie, emptyBannerVisible }) => {
   const cards = movies.map((item, index) => {
     return (
       <MoviesCard
@@ -14,7 +14,11 @@ const MoviesCardList = ({ movies, addMovie, deleteMovie, isNothingFind }) => {
   });
   return (
     <ul className='movies-list'>
-      {isNothingFind ? <span className='movie-list__banner'>Ничего не найдено!</span> : cards}
+      {movies.length === 0 && emptyBannerVisible ? (
+        <span className='movie-list__banner'>Ничего не найдено!</span>
+      ) : (
+        cards
+      )}
     </ul>
   );
 };

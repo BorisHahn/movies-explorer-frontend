@@ -47,9 +47,15 @@ function App() {
   //Значение чекбокса 'короткометражки' на странице Сохраненные фильмы
   const [shortFilmFlagSaved, setShortFilmFlagSaved] = useState(false);
   //Видимость кнопки 'еще'
-  const [isLoadButtonVisible, setIsLoadButtonVisible] = useState(true);
-  //Видимость надписи ничего не найдено
-  const [isNothingFind, setIsNothingFind] = useState(false);
+  const [isLoadButtonVisible, setIsLoadButtonVisible] = useState(
+    movies.length > 0
+  );
+  const [emptyBannerVisible, setEmptyBannerVisible] = useState(
+    localStorage.getItem('allMovies') != null
+  );
+  const [emptyBannerVisibleSaved, setEmptyBannerVisibleSaved] = useState(
+    savedMovies.length > 0
+  );
 
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
@@ -73,7 +79,9 @@ function App() {
   };
 
   useEffect(() => {
-    handleGetProfileInfo();
+    if (loggedIn) {
+      handleGetProfileInfo();
+    }
   }, []);
 
   //Создание учетной записи
@@ -123,8 +131,19 @@ function App() {
     mainApi
       .signOut()
       .then(() => {
+        localStorage.clear();
         setLoggedIn(false);
         setCurrentUser(null);
+        setMovies([]);
+        setSavedMovies([]);
+        setFiltredSavedMovies([]);
+        setSearchText('');
+        setSearchTextSaved('');
+        setShortFilmFlag(false);
+        setShortFilmFlagSaved(false);
+        setEmptyBannerVisible(false);
+        setEmptyBannerVisibleSaved(false);
+        setMessage('');
       })
       .catch((e) => {
         checkAuthError(e);
@@ -213,7 +232,6 @@ function App() {
 
   const onSubmit = () => {
     setMessage('');
-    setIsNothingFind(false);
     getMovies().then((res) =>
       setMovies(
         sliceMoviesArray(
@@ -229,6 +247,7 @@ function App() {
 
   const onSubmitSaved = () => {
     setMessage('');
+    setEmptyBannerVisibleSaved(true);
     setFiltredSavedMovies(
       filterMovies(
         savedMovies,
@@ -370,18 +389,22 @@ function App() {
     return movies;
   };
 
-  //Обновление количество отрисованных карточек 
+  //Обновление количество отрисованных карточек
 
   let updateMoviesTimeout = null;
   const updateMoviesList = () => {
     clearTimeout(updateMoviesTimeout);
     updateMoviesTimeout = setTimeout(() => {
-      setMovies(sliceMoviesArray(filterMovies(
-        gelLocalMovies(),
-        searchText,
-        shortFilmFlag,
-        shortFilmDuration
-      )));
+      setMovies(
+        sliceMoviesArray(
+          filterMovies(
+            gelLocalMovies(),
+            searchText,
+            shortFilmFlag,
+            shortFilmDuration
+          )
+        )
+      );
     }, 500);
   };
 
@@ -392,7 +415,7 @@ function App() {
     window.addEventListener('resize', updateMoviesList);
     return () => window.removeEventListener('resize', updateMoviesList);
   });
-  
+
   // дозагрузка фильмов по кнопке еще
 
   const loadMore = () => {
@@ -417,8 +440,8 @@ function App() {
       shortFilmFlag,
       shortFilmDuration
     );
-    setIsNothingFind(array.length === 0);
     setIsLoadButtonVisible(array.length !== movies.length);
+    setEmptyBannerVisible(localStorage.getItem('allMovies') != null);
   }, [movies]);
 
   return (
@@ -472,7 +495,7 @@ function App() {
                   setMessage={setMessage}
                   loadMore={loadMore}
                   isLoadButtonVisible={isLoadButtonVisible}
-                  isNothingFind={isNothingFind}
+                  emptyBannerVisible={emptyBannerVisible}
                 />
               }
             />
@@ -491,6 +514,7 @@ function App() {
                   shortFilmFlag={shortFilmFlagSaved}
                   setShortFilmFlag={setShortFilmFlagSaved}
                   onSubmit={onSubmitSaved}
+                  emptyBannerVisible={emptyBannerVisibleSaved}
                 />
               }
             />

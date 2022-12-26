@@ -18,7 +18,8 @@ const Movies = ({
   setMessage,
   loadMore,
   isLoadButtonVisible,
-  isNothingFind,
+  emptyBannerVisible
+  
 }) => {
   return (
     <main className='movies'>
@@ -35,14 +36,14 @@ const Movies = ({
         <Preloader />
       ) : (
         <MoviesCardList
-          isNothingFind={isNothingFind}
           movies={movies}
           addMovie={addMovieToSavedMovies}
           deleteMovie={deleteMovieFromSavedMovies}
+          emptyBannerVisible={emptyBannerVisible}
         />
       )}
-
       <LoadMore loadMore={loadMore} isLoadButtonVisible={isLoadButtonVisible} />
+      
     </main>
   );
 };

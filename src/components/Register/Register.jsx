@@ -7,13 +7,16 @@ import { emailRegExp } from '../../utils/constants';
 const Register = ({ handleRegister, message }) => {
   const { values, handleChangeValid, errors, isValid } = useFormAndValidation();
 
-  const isValidInput = isValid ? 'register__input' : 'register__input register__input_error';
-  const classErrorMessage = message ? 'register__message register__message_active' : 'register__message';
+  const isValidInput = isValid
+    ? 'register__input'
+    : 'register__input register__input_error';
+  const classErrorMessage = message
+    ? 'register__message register__message_active'
+    : 'register__message';
   const handleChange = (e) => {
     e.preventDefault();
     handleRegister(values);
   };
-
   return (
     <main className='register'>
       <div className='register__wrapper'>
@@ -24,7 +27,9 @@ const Register = ({ handleRegister, message }) => {
         <form className='register__form' onSubmit={handleChange}>
           <fieldset className='register__fieldset'>
             <div className='register__container'>
-              <label className='register__label' htmlFor='name'>Имя</label>
+              <label className='register__label' htmlFor='name'>
+                Имя
+              </label>
               <input
                 className='register__input'
                 minLength='3'
@@ -38,7 +43,9 @@ const Register = ({ handleRegister, message }) => {
               <span className='register__error'>{errors.name}</span>
             </div>
             <div className='register__container'>
-              <label className='register__label' htmlFor='E-mail'>E-mail</label>
+              <label className='register__label' htmlFor='E-mail'>
+                E-mail
+              </label>
               <input
                 type='email'
                 name='email'
@@ -53,7 +60,9 @@ const Register = ({ handleRegister, message }) => {
               <span className='register__error'>{errors.email}</span>
             </div>
             <div className='register__container'>
-              <label className='register__label' htmlFor='password'>Пароль</label>
+              <label className='register__label' htmlFor='password'>
+                Пароль
+              </label>
               <input
                 name='password'
                 type='password'
@@ -68,7 +77,9 @@ const Register = ({ handleRegister, message }) => {
             </div>
           </fieldset>
           <span className={classErrorMessage}>{message}</span>
-          <button className='register__button' disabled={!isValid}>Зарегестрироваться</button>
+          <button className='register__button' disabled={!isValid}>
+            Зарегестрироваться
+          </button>
           <p className='register__text'>
             Уже зарегестрированы?{' '}
             <Link className='register__link' to='/signin'>
