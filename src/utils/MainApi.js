@@ -2,14 +2,14 @@ class MainApi {
   constructor(options) {
     this._baseUrl = options.baseUrl;
     this._headers = options.headers;
-    this._isCredantials = options.credentials;
+    this._credentials = options.credentials;
   }
 
   getProfileInfo() {
     return fetch(this._baseUrl + '/users/me', {
       method: 'GET',
       headers: this._headers,
-      credentials: this._isCredantials,
+      credentials: this._credentials,
     }).then((result) => this._getResponseData(result));
   }
 
@@ -18,7 +18,7 @@ class MainApi {
       body: JSON.stringify({ name, email, password }),
       method: 'POST',
       headers: this._headers,
-      credentials: this._isCredantials,
+      credentials: this._credentials,
     }).then((result) => this._getResponseData(result));
   }
 
@@ -27,7 +27,7 @@ class MainApi {
       body: JSON.stringify({ email, password }),
       method: 'POST',
       headers: this._headers,
-      credentials: this._isCredantials,
+      credentials: this._credentials,
     }).then((result) => this._getResponseData(result));
   }
 
@@ -35,7 +35,7 @@ class MainApi {
     return fetch(this._baseUrl + '/signout', {
       method: 'POST',
       headers: this._headers,
-      credentials: this._isCredantials,
+      credentials: this._credentials,
     });
   }
 
@@ -44,7 +44,7 @@ class MainApi {
       body: JSON.stringify({ name, email }),
       method: 'PATCH',
       headers: this._headers,
-      credentials: this._isCredantials,
+      credentials: this._credentials,
     }).then((result) => this._getResponseData(result));
   }
 
@@ -52,7 +52,7 @@ class MainApi {
     return fetch(this._baseUrl + '/movies', {
       method: 'GET',
       headers: this._headers,
-      credentials: this._isCredantials,
+      credentials: this._credentials,
     }).then((result) => this._getResponseData(result));
   }
 
@@ -61,7 +61,7 @@ class MainApi {
       body: JSON.stringify(data),
       method: 'POST',
       headers: this._headers,
-      credentials: this._isCredantials,
+      credentials: this._credentials,
     }).then((result) => this._getResponseData(result));
   }
 
@@ -69,7 +69,7 @@ class MainApi {
     return fetch(this._baseUrl + `/movies/${id}`, {
       method: 'DELETE',
       headers: this._headers,
-      credentials: this._isCredantials,
+      credentials: this._credentials,
     }).then((result) => this._getResponseData(result));
   }
 
@@ -82,7 +82,7 @@ class MainApi {
 }
 
 const mainApi = new MainApi({
-  baseUrl: 'api.gaidukevich.movie.nomoredomains.club',
+  baseUrl: 'https://api.gaidukevich.movie.nomoredomains.club',
   headers: {
     'Content-Type': 'application/json',
   },
