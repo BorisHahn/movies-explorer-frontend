@@ -408,7 +408,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (!['/movies', '/saved-movies'].includes(location.pathname)) {
+    if (!['/movies'].includes(location.pathname)) {
       return;
     }
     window.addEventListener('resize', updateMoviesList);
@@ -511,7 +511,7 @@ function App() {
                   path='/saved-movies'
                   element={
                     <SavedMovies
-                      movies={sliceMoviesArray(filtredSavedMovies)}
+                      movies={filtredSavedMovies}
                       addMovieToSavedMovies={addMovieToSavedMovies}
                       deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
                       isloading={isloading}
