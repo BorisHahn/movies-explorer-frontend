@@ -16,6 +16,7 @@ import Profile from '../Profile/Profile';
 import Footer from '../Footer/Footer';
 import NotFound from '../NotFound/NotFound';
 import HamburgerMenu from '../HamburgerMenu/HamburgerMenu';
+import Preloader from '../Preloader/Preloader';
 import './App.css';
 
 function App() {
@@ -56,7 +57,7 @@ function App() {
   const [emptyBannerVisibleSaved, setEmptyBannerVisibleSaved] = useState(
     savedMovies.length > 0
   );
-
+  console.log(currentUser);
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
   };
@@ -64,18 +65,18 @@ function App() {
   //Получение информации о пользователе
 
   const handleGetProfileInfo = () => {
+    setIsloading(true);
     mainApi
       .getProfileInfo()
       .then((res) => {
-        if (res.email) {
-          setLoggedIn(true);
-          setCurrentUser(res);
-          navigate('/movies');
-        }
+        setLoggedIn(true);
+        setCurrentUser(res);
+        navigate('/movies');
       })
       .catch((e) => {
         checkAuthError(e);
-      });
+      })
+      .finally(() => setIsloading(false));
   };
 
   useEffect(() => {
@@ -88,11 +89,11 @@ function App() {
     mainApi
       .signUp({ name, email, password })
       .then((res) => {
-        if (res) {
+        setCurrentUser({ ...res });
+        mainApi.signIn({ email, password }).then((res) => {
           setLoggedIn(true);
-          setCurrentUser(res);
           navigate('/movies');
-        }
+        });
       })
       .catch((e) => {
         checkAuthError(e);
@@ -131,7 +132,7 @@ function App() {
       .then(() => {
         localStorage.clear();
         setLoggedIn(false);
-        setCurrentUser(null);
+        setCurrentUser({});
         setMovies([]);
         setSavedMovies([]);
         setFiltredSavedMovies([]);
@@ -445,91 +446,102 @@ function App() {
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='page'>
-        <HamburgerMenu
-          loggedIn={loggedIn}
-          handleHamburgerMenu={handleHamburgerMenu}
-          hamburgerMenu={hamburgerMenu}
-        />
-        <Header
-          loggedIn={loggedIn}
-          handleHamburgerMenu={handleHamburgerMenu}
-          hamburgerMenu={hamburgerMenu}
-        />
-        <Routes>
-          <Route path='/' element={<Main />} />
-          <Route
-            element={
-              <ProtectedRoute loggedIn={!loggedIn} navigateTo='/movies' />
-            }
-          >
-            <Route
-              path='/signup'
-              element={
-                <Register handleRegister={handleRegister} message={message} />
-              }
+        {isloading ? (
+          <Preloader />
+        ) : (
+          <>
+            <HamburgerMenu
+              loggedIn={loggedIn}
+              handleHamburgerMenu={handleHamburgerMenu}
+              hamburgerMenu={hamburgerMenu}
             />
-            <Route
-              path='/signin'
-              element={<Login handleLogin={handleLogin} message={message} />}
+            <Header
+              loggedIn={loggedIn}
+              handleHamburgerMenu={handleHamburgerMenu}
+              hamburgerMenu={hamburgerMenu}
             />
-          </Route>
-          <Route
-            element={<ProtectedRoute loggedIn={loggedIn} navigateTo='/' />}
-          >
-            <Route
-              path='/movies'
-              element={
-                <Movies
-                  movies={calcLikeCards(movies)}
-                  searchText={searchText}
-                  setSearchText={setSearchText}
-                  shortFilmFlag={shortFilmFlag}
-                  setShortFilmFlag={setShortFilmFlag}
-                  onSubmit={onSubmit}
-                  isloading={isloading}
-                  addMovieToSavedMovies={addMovieToSavedMovies}
-                  deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
-                  message={message}
-                  setMessage={setMessage}
-                  loadMore={loadMore}
-                  isLoadButtonVisible={isLoadButtonVisible}
-                  emptyBannerVisible={emptyBannerVisible}
+            <Routes>
+              <Route path='/' element={<Main />} />
+              <Route
+                element={
+                  <ProtectedRoute loggedIn={!loggedIn} navigateTo='/movies' />
+                }
+              >
+                <Route
+                  path='/signup'
+                  element={
+                    <Register
+                      handleRegister={handleRegister}
+                      message={message}
+                    />
+                  }
                 />
-              }
-            />
-            <Route
-              path='/saved-movies'
-              element={
-                <SavedMovies
-                  movies={sliceMoviesArray(filtredSavedMovies)}
-                  addMovieToSavedMovies={addMovieToSavedMovies}
-                  deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
-                  isloading={isloading}
-                  message={message}
-                  setMessage={setMessage}
-                  searchText={searchTextSaved}
-                  setSearchText={setSearchTextSaved}
-                  shortFilmFlag={shortFilmFlagSaved}
-                  setShortFilmFlag={setShortFilmFlagSaved}
-                  onSubmit={onSubmitSaved}
-                  emptyBannerVisible={emptyBannerVisibleSaved}
+                <Route
+                  path='/signin'
+                  element={
+                    <Login handleLogin={handleLogin} message={message} />
+                  }
                 />
-              }
-            />
-            <Route
-              path='/profile'
-              element={
-                <Profile
-                  handleEditProfileInfo={handleEditProfileInfo}
-                  handleLogout={handleLogout}
-                  message={message}
+              </Route>
+              <Route
+                element={<ProtectedRoute loggedIn={loggedIn} navigateTo='/' />}
+              >
+                <Route
+                  path='/movies'
+                  element={
+                    <Movies
+                      movies={calcLikeCards(movies)}
+                      searchText={searchText}
+                      setSearchText={setSearchText}
+                      shortFilmFlag={shortFilmFlag}
+                      setShortFilmFlag={setShortFilmFlag}
+                      onSubmit={onSubmit}
+                      isloading={isloading}
+                      addMovieToSavedMovies={addMovieToSavedMovies}
+                      deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
+                      message={message}
+                      setMessage={setMessage}
+                      loadMore={loadMore}
+                      isLoadButtonVisible={isLoadButtonVisible}
+                      emptyBannerVisible={emptyBannerVisible}
+                    />
+                  }
                 />
-              }
-            />
-          </Route>
-          <Route path='*' element={<NotFound />} />
-        </Routes>
-        <Footer />
+                <Route
+                  path='/saved-movies'
+                  element={
+                    <SavedMovies
+                      movies={sliceMoviesArray(filtredSavedMovies)}
+                      addMovieToSavedMovies={addMovieToSavedMovies}
+                      deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
+                      isloading={isloading}
+                      message={message}
+                      setMessage={setMessage}
+                      searchText={searchTextSaved}
+                      setSearchText={setSearchTextSaved}
+                      shortFilmFlag={shortFilmFlagSaved}
+                      setShortFilmFlag={setShortFilmFlagSaved}
+                      onSubmit={onSubmitSaved}
+                      emptyBannerVisible={emptyBannerVisibleSaved}
+                    />
+                  }
+                />
+                <Route
+                  path='/profile'
+                  element={
+                    <Profile
+                      handleEditProfileInfo={handleEditProfileInfo}
+                      handleLogout={handleLogout}
+                      message={message}
+                    />
+                  }
+                />
+              </Route>
+              <Route path='*' element={<NotFound />} />
+            </Routes>
+            <Footer />
+          </>
+        )}
       </div>
     </CurrentUserContext.Provider>
   );
