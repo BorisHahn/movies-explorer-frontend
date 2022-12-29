@@ -79,9 +79,7 @@ function App() {
   };
 
   useEffect(() => {
-    if (loggedIn) {
-      handleGetProfileInfo();
-    }
+    handleGetProfileInfo();
   }, []);
 
   //Создание учетной записи
