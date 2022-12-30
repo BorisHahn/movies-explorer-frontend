@@ -443,6 +443,14 @@ function App() {
     setEmptyBannerVisible(localStorage.getItem('allMovies') != null);
   }, [movies]);
 
+  useEffect(() => {
+    if (location.pathname === '/saved-movies') {
+      setShortFilmFlagSaved(false);
+      setSearchTextSaved('');
+      setFiltredSavedMovies(savedMovies);
+    }
+  }, [location]);
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className='page'>
