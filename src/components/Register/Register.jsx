@@ -38,6 +38,7 @@ const Register = ({ handleRegister, message }) => {
                 name='name'
                 type='text'
                 value={values.name || ''}
+                autoComplete='off'
                 required
               ></input>
               <span className='register__error'>{errors.name}</span>
@@ -54,8 +55,8 @@ const Register = ({ handleRegister, message }) => {
                 className='register__input'
                 onChange={handleChangeValid}
                 value={values.email || ''}
-                required
                 autoComplete='off'
+                required
               ></input>
               <span className='register__error'>{errors.email}</span>
             </div>
@@ -71,6 +72,7 @@ const Register = ({ handleRegister, message }) => {
                 onChange={handleChangeValid}
                 minLength='6'
                 value={values.password || ''}
+                autoComplete='new-password'
                 required
               ></input>
               <span className='register__error '>{errors.password}</span>

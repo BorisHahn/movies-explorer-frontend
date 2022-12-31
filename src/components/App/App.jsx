@@ -32,7 +32,7 @@ function App() {
   //Сохраненные фильмы
   const [savedMovies, setSavedMovies] = useState([]);
   //Отфильтрованные сохраненные фильмы
-  const [filtredSavedMovies, setFiltredSavedMovies] = useState([]);
+  const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
   //Состояние загрузки
   const [isloading, setIsloading] = useState(false);
   //Значение поисковой строки
@@ -57,7 +57,7 @@ function App() {
   const [emptyBannerVisibleSaved, setEmptyBannerVisibleSaved] = useState(
     savedMovies.length > 0
   );
-  console.log(currentUser);
+
   const handleHamburgerMenu = () => {
     setHamburgerMenu(!hamburgerMenu);
   };
@@ -130,12 +130,12 @@ function App() {
     mainApi
       .signOut()
       .then(() => {
-        localStorage.clear();
+        
         setLoggedIn(false);
         setCurrentUser({});
         setMovies([]);
         setSavedMovies([]);
-        setFiltredSavedMovies([]);
+        setFilteredSavedMovies([]);
         setSearchText('');
         setSearchTextSaved('');
         setShortFilmFlag(false);
@@ -143,6 +143,7 @@ function App() {
         setEmptyBannerVisible(false);
         setEmptyBannerVisibleSaved(false);
         setMessage('');
+        localStorage.clear();
       })
       .catch((e) => {
         checkAuthError(e);
@@ -178,14 +179,18 @@ function App() {
     }
   };
 
-  const gelLocalMovies = () => {
-    return JSON.parse(localStorage.getItem('allMovies')) || [];
+  const gelLocalMovies = (useAllMovies = false) => {
+    return (
+      JSON.parse(
+        localStorage.getItem(useAllMovies ? 'allMovies' : 'filteredMovies')
+      ) || []
+    );
   };
 
   //Получаем все фильмы с BeatfilmMoviesApi
 
   const getMovies = () => {
-    let movies = gelLocalMovies();
+    let movies = gelLocalMovies(true);
     if (Array.isArray(movies) && movies.length > 0) {
       return Promise.resolve(movies);
     }
@@ -231,13 +236,16 @@ function App() {
 
   const onSubmit = () => {
     setMessage('');
-    getMovies().then((res) =>
-      setMovies(
-        sliceMoviesArray(
-          filterMovies(res, searchText, shortFilmFlag, shortFilmDuration)
-        )
-      )
-    );
+    getMovies().then((res) => {
+      const movies = filterMovies(
+        res,
+        searchText,
+        shortFilmFlag,
+        shortFilmDuration
+      );
+      setMovies(sliceMoviesArray(movies));
+      localStorage.setItem('filteredMovies', JSON.stringify(movies));
+    });
     localStorage.setItem('searchText', searchText);
     localStorage.setItem('shortFilmFlag', shortFilmFlag);
   };
@@ -247,7 +255,7 @@ function App() {
   const onSubmitSaved = () => {
     setMessage('');
     setEmptyBannerVisibleSaved(true);
-    setFiltredSavedMovies(
+    setFilteredSavedMovies(
       filterMovies(
         savedMovies,
         searchTextSaved,
@@ -257,21 +265,23 @@ function App() {
     );
   };
 
-  const applyFilter = () => {
+  const applyFilter = (useAllMovies = false) => {
     setMovies(
       sliceMoviesArray(
         filterMovies(
-          gelLocalMovies(),
+          gelLocalMovies(useAllMovies),
           searchText,
           shortFilmFlag,
           shortFilmDuration
         )
       )
     );
+    localStorage.setItem('searchText', searchText);
+    localStorage.setItem('shortFilmFlag', shortFilmFlag);
   };
 
   const applyFilterSaved = () => {
-    setFiltredSavedMovies(
+    setFilteredSavedMovies(
       filterMovies(
         savedMovies,
         searchTextSaved,
@@ -286,7 +296,7 @@ function App() {
   useEffect(applyFilter, []);
   useEffect(applyFilterSaved, [savedMovies]);
 
-  useEffect(applyFilter, [shortFilmFlag]);
+  useEffect(() => applyFilter(true), [shortFilmFlag]);
   useEffect(applyFilterSaved, [shortFilmFlagSaved]);
 
   //Получаем сохраненные фильмы пользователя
@@ -447,7 +457,7 @@ function App() {
     if (location.pathname === '/saved-movies') {
       setShortFilmFlagSaved(false);
       setSearchTextSaved('');
-      setFiltredSavedMovies(savedMovies);
+      setFilteredSavedMovies(savedMovies);
     }
   }, [location]);
 
@@ -519,7 +529,7 @@ function App() {
                   path='/saved-movies'
                   element={
                     <SavedMovies
-                      movies={filtredSavedMovies}
+                      movies={filteredSavedMovies}
                       addMovieToSavedMovies={addMovieToSavedMovies}
                       deleteMovieFromSavedMovies={deleteMovieFromSavedMovies}
                       isloading={isloading}

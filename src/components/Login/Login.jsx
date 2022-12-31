@@ -32,7 +32,7 @@ const Login = ({ handleLogin, message }) => {
                 id='email'
                 value={values.email || ''}
                 required
-                autoComplete='off'
+                autoComplete="username"
               ></input>
               <span className='login__error'>{errors.email}</span>
             </div>
@@ -47,6 +47,7 @@ const Login = ({ handleLogin, message }) => {
                 minLength='6'
                 value={values.password || ''}
                 required
+                autoComplete="current-password"
               ></input>
               <span className='login__error'>{errors.password}</span>
             </div>

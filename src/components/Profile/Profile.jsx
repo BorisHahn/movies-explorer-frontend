@@ -58,6 +58,7 @@ const Profile = ({ handleEditProfileInfo, handleLogout, message }) => {
               value={values.name || ''}
               placeholder='Имя'
               required
+              autoComplete="username"
             ></input>
           </div>
           <span className='profile__error'>{errors.name}</span>
@@ -75,6 +76,7 @@ const Profile = ({ handleEditProfileInfo, handleLogout, message }) => {
               value={values.email || ''}
               placeholder='E-mail'
               required
+              autoComplete="current-password"
             ></input>
           </div>
           <span className='profile__error'>{errors.email}</span>
