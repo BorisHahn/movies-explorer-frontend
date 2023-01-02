@@ -1,8 +1,14 @@
 import './LoadMore.css';
-const LoadMore = () => {
+const LoadMore = ({ loadMore, isLoadButtonVisible }) => {
+  const handleLoad = () => {
+    loadMore();
+  };
+  const loadButtonClass = isLoadButtonVisible
+    ? 'load-more'
+    : 'load-more load-more_hide';
   return (
-    <div className='load-more'>
-      <button type='button' className='load-more__button'>
+    <div className={loadButtonClass}>
+      <button type='button' className='load-more__button' onClick={handleLoad}>
         Ещё
       </button>
     </div>

@@ -15,7 +15,10 @@
   margin: 0;
   margin-bottom: 16px;
   padding: 0;
-  width: 100%;
+  width: 364px;
+  height: 203px;
+  cursor: pointer;
+  object-fit: cover;
 }
 
 .movies-item__wrapper,
@@ -75,6 +78,12 @@
   display: none;
 }
 
+@media (max-width: 1279.98px) {
+  .movies-item__photo {
+    width: 339px;
+  }
+}
+
 @media (max-width: 768px) {
   .movies-item__title {
     font-size: 13px;
@@ -88,6 +97,9 @@
   .movies-item__time {
     margin-bottom: 14px;
     padding-left: 14px;
+  }
+  .movies-item__photo {
+    width: 300px;
   }
 }
 @media (max-width: 575.98px) {

@@ -21,6 +21,10 @@
   box-sizing: border-box;
 }
 
+.load-more_hide {
+  display: none;
+}
+
 .load-more__button:hover {
   opacity: 0.8;
   cursor: pointer;
