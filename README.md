@@ -1,6 +1,5 @@
 # Movies explorer
 SPA - приложение для удобного поиска и сохранения фильмов
-фронтенд часть дипломного проекта студента WEB-Факультета Яндекс Практикума
 
 * пулл реквест: [https://github.com/ns-mamaev/movies-explorer-frontend/pull/3](https://github.com/BorisHahn/movies-explorer-frontend/pull/2 )
 * ссылка на макет: [https://yadi.sk/d/l6K7J4JnzHtJCg](https://disk.yandex.ru/d/HOgPEdYebNsb9A)
