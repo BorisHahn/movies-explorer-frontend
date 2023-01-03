@@ -1,10 +1,10 @@
 # Movies explorer
 SPA - приложение для удобного поиска и сохранения фильмов
 
-* пулл реквест: [https://github.com/ns-mamaev/movies-explorer-frontend/pull/3](https://github.com/BorisHahn/movies-explorer-frontend/pull/2 )
-* ссылка на макет: [https://yadi.sk/d/l6K7J4JnzHtJCg](https://disk.yandex.ru/d/HOgPEdYebNsb9A)
-* проект на сервере: [https://moviessearch.nomoredomains.icu/](https://gaidukevich.movie.nomoredomains.club)
-* api: [https://api.moviessearch.nomoredomains.icu/](https://api.gaidukevich.movie.nomoredomains.club)
+* пулл реквест: (https://github.com/BorisHahn/movies-explorer-frontend/pull/2 )
+* ссылка на макет: (https://disk.yandex.ru/d/HOgPEdYebNsb9A)
+* проект на сервере: (https://gaidukevich.movie.nomoredomains.club)
+* api: (https://api.gaidukevich.movie.nomoredomains.club)
 * IP адрес сервера: 158.160.1.108
 
 **Функционал:**
